@@ -1,8 +1,13 @@
+import sys
+import random
+import time
+import datetime
 import pygame
+
 pygame.init()
 
 #Screen
-size = width, height = 1280, 720 #Make sure background image is same size
+size = width, height = 340, 240 #Make sure background image is same size
 screen = pygame.display.set_mode(size)
 
 done = False
@@ -64,5 +69,5 @@ while not done:
             pygame.display.flip()
 
     Clock.tick(60) # ensures a maximum of 60 frames per second
-
+print Minute
 pygame.quit()

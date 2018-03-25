@@ -14,7 +14,7 @@ Setup ssh
   port 8997
   authorized_keys
 Make like others:
-  git clone git@github.com:thomascoreapps/personalCodingProjects.git
+  git clone git@github.com:thomascoreapps/tinkering.git
   cp .bashrc /home/pi/.bashrc
   sudo cp motd /etc/motd
   install vim tmux
