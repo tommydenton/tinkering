@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Getting Started With PubNub</title>
+  </head>
+  <body>
+    <script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+    <script charset="utf-8">
+      (function(){
+    
+        var PUBNUB_demo = PUBNUB.init({
+          publish_key: 'pub-c-9e200d45-f59d-4ed1-aa52-61fbf0b219b3',
+          subscribe_key: 'sub-c-9993788c-1f9a-11e5-9dff-0619f8945a4f'
+        });
+        
+        PUBNUB_demo.subscribe({
+          channel: 'iot_house',
+          message: function(m){console.log(m)},
+          connect : publish
+        });
+        
+        function publish() {
+          PUBNUB_demo.publish({
+            channel: 'iot_house',
+            message: {"text":"Hey Tommy!"}
+          });
+        }
+        
+      })();
+
+    </script>
+  </body>
+</html>

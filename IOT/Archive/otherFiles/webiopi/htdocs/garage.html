@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="height = device-height, width = device-width, user-scalable = no"/>
+<title>Garage Door Opener</title>
+<script type="text/javascript" src="/webiopi.js"></script>
+<script type="text/javascript">
+        webiopi().ready(function() {
+                var content, content2, button;
+                content = $("#content");
+				content2 = $("#openCloseButton");
+				$(checkStatus);
+		webiopi().setFunction(7,"in");
+		webiopi().setFunction(18,"in");
+		
+		
+                // create an "OPEN" labeled button for GPIO 18
+                button = webiopi().createGPIOButton(18, "");
+                content2.append(button); // append button to content div
+
+                // create button that calls the mousedown function below
+                button = webiopi().createButton("button", "GARAGE DOOR", showConfirm );
+                content.append(button); // append button to content div
+				
+				function checkStatus() {
+				if ($('#gpio18').hasClass('LOW')){
+					$("#gpio18").html('CLOSED');
+					}else {
+						$("#gpio18").html('OPEN');
+					}
+				setTimeout(checkStatus,1000)
+				}
+
+				// this function gets called by the mousedown function below - it sets gpio7 back to 'IN'
+				function mouseup() {
+					webiopi().setFunction(7,"in");
+					//window.alert("RELAY OPEN");
+				}
+
+				// this function sets gpio7 to 'OUT' which will trip the relay.  After .5 second it calls mouseup above.
+				// hides the confirmation div and makes doge face change
+				function mousedown() {
+					document.getElementById('button').style.background = "#808080 url('/doge-action.png') no-repeat center bottom";
+					webiopi().setFunction(7,"out");
+					//window.alert("RELAY CLOSED");
+					document.getElementById('confirmBox').style.visibility = "hidden";
+					document.getElementById('confirmText').style.visibility = "hidden";
+					setTimeout(mouseup, 500);
+					setTimeout(dogeNormal, 3000);
+				}
+
+				// after pressing no hide the confirmation div
+				function hideConfirm() {
+					document.getElementById('confirmBox').style.visibility = "hidden";
+					document.getElementById('confirmText').style.visibility = "hidden";
+				}
+
+				// show confirmation div after pressing garage door button
+				function showConfirm() {
+					document.getElementById('yes').onclick = mousedown;
+					document.getElementById('no').onclick = hideConfirm;
+					document.getElementById('confirmBox').style.visibility = "visible";
+					document.getElementById('confirmText').style.visibility = "visible";
+				}
+				
+				// change doge face to normal
+				function dogeNormal() {
+					document.getElementById('button').style.background = "#808080 url('/doge-static.png') no-repeat center bottom";
+				}
+
+            // constantly refresh status to see if door is open or closed
+				webiopi().refreshGPIO(true)
+				});
+
+        </script>
+        <style type="text/css">
+		
+		body {
+		
+			font-family: Arial, Helvetica, Sans-Serif;
+			padding: 0px;
+			margin: 0px;
+			background: #CCCCCC;
+			
+		}
+		#content {
+			width: 300px;
+			height: 250px;
+		}
+		
+        button {
+		
+			display: block;
+			margin: 10px 10px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 0px;
+			width: 300px;
+			height: 50px;
+			font-size: 24pt;
+			font-weight: bold;
+			color: black;
+			border-radius: 10px !important;
+			
+        }
+		
+		button#button {
+		
+			height: 250px !important;
+			background: #808080 url('doge-static.png') no-repeat center bottom;
+			border-radius: 10px !important;
+			cursor: pointer !important;
+			
+		}
+		#gpio18.LOW {
+		
+			color: #FFFFFF !important;
+			
+		}
+
+		#gpio18.HIGH {
+		
+			color: #FFFFFF !important;
+			
+		}
+		#header {
+		
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 0px !important;
+			padding-top: 0px !important;
+			
+		}
+		#confirmText {
+		
+			margin-left: auto;
+			margin-right: auto;
+			padding: 0px;
+			margin-top: 0px;
+			visibility: hidden;
+			width: 300px;
+			
+		}
+		h2 {
+		
+			text-align: center;			
+			margin-top: 0px !important;
+			margin-bottom: 10px !important;
+			
+		}
+		#doge {
+		
+			width: 300px;
+			height: 80px;
+			position: absolute;
+			bottom: 0px;
+			
+		}
+		#confirmBox {
+			height: 60px;
+			width: 300px;
+			margin-left: auto;
+			margin-right: auto;
+			position:relative;
+			visibility: hidden;
+		}
+		#yes {
+			background-color: green;
+			float: left;
+		}
+		#no {
+			background-color: red;
+			float: right;
+		}
+		.confirmButton {
+			border: 3px solid #000000;
+			border-radius: 10px;
+			cursor: pointer;
+			height: 50px;
+			width: 130px;
+			font-size: 24pt;
+            font-weight: bold;
+			text-align: center;
+			line-height: 50px;
+		}
+			#openCloseButton {
+			width: 300px;
+			height: 60px;
+		}
+			</style>
+</head>
+<body>
+<div id="header"><h2>Door Status</h2></div>
+<div id="openCloseButton" style="margin-left: auto; margin-right: auto; position:relative"></div>
+<div id="content" style="margin-left: auto; margin-right: auto; position:relative"></div>
+<div id="confirmText"><h2>Are you sure?</h2></div>
+<div id="confirmBox"><div id="yes" class="confirmButton">YES</div><div id="no" class="confirmButton">NO</div></div>
+</body>
+</html>

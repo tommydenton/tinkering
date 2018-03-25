@@ -1,0 +1,237 @@
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+    <style type="text/css">
+        * {
+            font-family: 'Roboto', sans-serif !important;
+            font-weight: 300;
+        }
+        .ui-header {
+            background-color: #ce1126 !important;
+            color: #fff !important;
+            text-shadow: 0px 2px 1px #88000F !important;
+            border-top: 1px solid #DB5362 !important;
+            border-bottom: 1px solid #88000F !important;
+        }
+        a {
+            color: #ce1126 !important;
+            text-decoration: none;
+        }
+        .ui-bar-a {
+            text-align: center;
+            background-color: #f2f2f2 !important;
+        }
+        .ui-header h1.ui-title {
+            font-weight: bold;
+            margin: 0px !important;
+            font-size: 24px;
+        }
+        h3.ui-bar {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        .ui-block-b {
+            text-align: right;
+        }
+        .ui-bar: first-of-type {
+            margin-top: 0px;
+        }
+        .ui-body .ui-grid-a {
+            border-bottom: 1px solid #efefef;
+            padding-bottom: 10px;
+            padding-top: 6px;
+        }
+        .ui-body .ui-grid-a: last-child {
+            border-bottom: none;
+        }
+        legend {
+            padding-top: 19px !important;
+        }
+        .ui-block-b {
+            font-size: 0px;
+        }
+        .toggle .ui-block-b button: first-of-type {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            margin-right: 0px !important;
+            border-right: 0px;
+        }
+        .toggle .ui-block-b button: last-of-type {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-lefT: 0px !important;
+        }
+        .ui-grid-a>.ui-block-a {
+            width: 25% !important;
+        }
+        .ui-grid-a>.ui-block-b {
+            width: 75% !important;
+        }
+        .toggle .ui-block-b garageButton: {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            margin-right: 0px !important;
+            border-right: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-lefT: 0px !important;
+        }
+        .toggle .ui-block-b sensorButton: {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            margin-right: 0px !important;
+            border-right: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-lefT: 0px !important;
+        }
+        .toggle .ui-block-b lightButton: {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            margin-right: 0px !important;
+            border-right: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-lefT: 0px !important;
+        }    
+    </style>
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>Tommy's Command Center</h1>
+        </div>
+        <div data-role="content">
+            <h3 class="ui-bar ui-bar-a ui-corner-all">Control Panel</h3>
+            <div class="ui-body ui-body-a ui-corner-all">
+                <!-- <div class="ui-grid-a toggle" id="RelayControl5">
+                    <legend class="ui-block-a">Relay Control 5:</legend>
+                    <div class="ui-block-b">
+                        <button type="button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" value="1">On</button>
+                        <button type="button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" value="0">Off</button>
+                    </div>
+                </div> -->
+                <div class="ui-grid-a toggle" id="RelayControl6">
+                    <legend class="ui-block-a">Desk LED Lights</legend>
+                    <div class="ui-block-b">
+                        <button type="button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" value="1">On</button>
+                        <button type="button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" value="0">Off</button>
+                    </div>
+                </div>
+                <div class="ui-grid-a toggle" id="RELAY">
+                    <legend class="ui-block-a">Grage Door Button</legend>
+                    <div class="ui-block-b">
+                        <garageButton type="garageButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Activate!</garageButton>
+                    </div>
+                </div>
+            </div>
+            <h3 class="ui-bar ui-bar-a ui-corner-all">Sensor Panel</h3>
+            <div class="ui-body ui-body-a ui-corner-all">
+                <div class="ui-grid-a toggle" id="Sensor">
+                    <legend class="ui-block-a">Grage Door Sensor</legend>
+                    <div class="ui-block-b">
+                        <sensorButton type="sensorButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Ready</sensorButton>
+                    </div>
+                </div>
+                <div class="ui-grid-a toggle" id="Light">
+                    <legend class="ui-block-a">Desk Light Sensor</legend>
+                    <div class="ui-block-b">
+                        <lightButton type="lightButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Ready</lightButton>
+                    </div>
+                </div>                
+            </div>
+            <br />
+            <div data-role="footer" class="ui-corner-all">
+                <h3>Powered by <a href="http://pubnub.com">PubNub</a></h3>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            // Let's setup PubNub Keys
+            var garagePubnub = PUBNUB.init({
+                publish_key: 'pub-c-dc523a3b-b81c-430d-9eb6-37ffa0c9053c',
+                subscribe_key: 'sub-c-2e3bb45c-1f8e-11e5-9dff-0619f8945a4f'
+            });
+
+            // Let's setup PubNub Cannels
+            var sensorChannel = "iot_garage_sensor";
+            var monitorChannel = "iot_garage_monitor";
+            var relayChannel = "iot_garage_door";
+
+            // Go get the state of the door from PubNub History
+            // We get back a response that is not usable, I stringify it, split it, then update the button
+            garagePubnub.history({
+                channel: sensorChannel,
+                count: 1,
+                callback: function(doorState) {
+                    doorStatePrime = JSON.stringify(doorState);
+                    doorSplit = doorStatePrime.split(",", 1);
+                    doorSplitPrime = doorSplit[0]
+                    doorSplitPrimePrime = doorSplitPrime.split("[", 3);
+                    doorSplitPrimePrimePrime = doorSplitPrimePrime[2]
+                    doorPosition = doorSplitPrimePrimePrime.split(']', 1)
+                    if (doorPosition == '"Opened"') {
+                        $('sensorButton').text('Open');
+                    } else {
+                        $('sensorButton').text('Closed');
+                    }
+                }
+            });
+
+            // "Listen" for the Toggle button to be pressed, then tell PubNub to publish some JSON, also Update the monitoring channel
+            $('garageButton').click(function() {
+                garagePubnub.publish({
+                    channel: relayChannel,
+                    message: {
+                        "RELAY": 1
+                    }
+                });
+                garagePubnub.publish({
+                    channel: monitorChannel,
+                    message: {
+                        "Webpage": "GarageDoorFired"
+                    }
+                });
+            });
+
+            // "Listen" for the door sensor to Open or Close and then update the button
+            garagePubnub.subscribe({
+                channel: sensorChannel,
+                message: function(message) {
+                    messagePrime = JSON.stringify(message);
+                    if (messagePrime == '"Opened"') {
+                        $('sensorButton').text('Open');
+                    } else {
+                        $('sensorButton').text('Closed');
+                    }
+                }
+            });
+
+            // Turn on or off the relays on the Ardunio controlling my Desk
+            var ardunioChannel = "DeskEpic";
+            var ardunioPubnub = PUBNUB.init({
+                publish_key: 'pub-c-bd5f81be-adc5-4377-bcba-31715ec6d559',
+                subscribe_key: 'sub-c-01b08a6e-279c-11e5-b6a9-0619f8945a4f'
+            });
+
+            $('button').click(function() {
+                var value = $(this).val();
+                var module = $(this).parent().parent().attr('id');
+                $('lightButton').text(value == 1 ? "On" : "Off");
+                ardunioPubnub.publish({
+                    channel: ardunioChannel,
+                    message: {
+                        CMD: module + ":" + value
+                    }
+                });
+            });
+        });
+    </script>
+</body>
