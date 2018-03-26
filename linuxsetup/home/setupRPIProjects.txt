@@ -1,5 +1,8 @@
 #### How to setup Linux
 
+##TODO: Fix the path so copy and Paste work
+##TODO: Build one Stretch image with most of this in here.
+
 copy ssh and wpa into /boot
 change root
 change pi

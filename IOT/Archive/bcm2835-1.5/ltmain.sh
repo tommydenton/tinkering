@@ -5089,11 +5089,6 @@ func_mode_link ()
       # flag for every libtool invocation.
       # allow_undefined=no
 
-      # FIXME: Unfortunately, there are problems with the above when trying
-      # to make a dll which has undefined symbols, in which case not
-      # even a static library is built.  For now, we need to specify
-      # -no-undefined on the libtool link line when we can be certain
-      # that all symbols are satisfied, otherwise we get a static library.
       allow_undefined=yes
       ;;
     *)
@@ -9633,4 +9628,3 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # sh-indentation:2
 # End:
 # vi:sw=2
-
