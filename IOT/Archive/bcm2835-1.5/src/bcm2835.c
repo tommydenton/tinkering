@@ -307,7 +307,7 @@ void bcm2835_gpio_write(uint8_t pin, uint8_t on)
 // to remove the current Pull-up/down)
 // 2. Wait 150 cycles – this provides the required set-up time for the control signal
 // 3. Write to GPPUDCLK0/1 to clock the control signal into the GPIO pads you wish to
-// modify – NOTE only the pads which receive a clock will be modified, all others will
+// modify – Only the pads which receive a clock will be modified, all others will
 // retain their previous state.
 // 4. Wait 150 cycles – this provides the required hold time for the control signal
 // 5. Write to GPPUD to remove the control signal
@@ -342,7 +342,7 @@ void bcm2835_spi_begin()
 }
 
 void bcm2835_spi_end()
-{  
+{
   // Set all the SPI0 pins back to input
   bcm2835_gpio_fsel(RPI_GPIO_P1_26, BCM2835_GPIO_FSEL_INPT); // CE1
   bcm2835_gpio_fsel(RPI_GPIO_P1_24, BCM2835_GPIO_FSEL_INPT); // CE0
@@ -380,8 +380,8 @@ uint8_t bcm2835_spi_transfer(uint8_t value)
     volatile uint32_t* fifo = spi0 + BCM2835_SPI0_FIFO/4;
 
     // This is Polled transfer as per section 10.6.1
-    // BUG ALERT: what happens if we get interupted in this section, and someone else
-    // accesses a different peripheral? 
+    // What happens if we get interupted in this section, and someone else
+    // accesses a different peripheral?
     // Clear TX and RX fifos
     bcm2835_peri_set_bits(paddr, BCM2835_SPI0_CS_CLEAR, BCM2835_SPI0_CS_CLEAR);
 
@@ -415,8 +415,8 @@ void bcm2835_spi_transfern(char* buf, uint32_t len)
     volatile uint32_t* fifo = spi0 + BCM2835_SPI0_FIFO/4;
 
     // This is Polled transfer as per section 10.6.1
-    // BUG ALERT: what happens if we get interupted in this section, and someone else
-    // accesses a different peripheral? 
+    // What happens if we get interupted in this section, and someone else
+    // accesses a different peripheral?
 
     // Clear TX and RX fifos
     bcm2835_peri_set_bits(paddr, BCM2835_SPI0_CS_CLEAR, BCM2835_SPI0_CS_CLEAR);
@@ -487,7 +487,7 @@ int bcm2835_init()
 	    fprintf(stderr, "bcm2835_init: Unable to open /dev/mem: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-	
+
 	// GPIO:
 	// Allocate 2 pages - 1 ...
 	if ((gpioMem = malloc(BCM2835_BLOCK_SIZE + (BCM2835_PAGE_SIZE - 1))) == NULL)
@@ -495,70 +495,70 @@ int bcm2835_init()
 	    fprintf(stderr, "bcm2835_init: malloc failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	// ... to make sure we can round it up to a whole page size
 	mapaddr = gpioMem;
 	if (((uint32_t)mapaddr % BCM2835_PAGE_SIZE) != 0)
 	    mapaddr += BCM2835_PAGE_SIZE - ((uint32_t)mapaddr % BCM2835_PAGE_SIZE) ;
-    
+
 	gpio = (uint32_t *)mmap(mapaddr, BCM2835_BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, BCM2835_GPIO_BASE) ;
-    
+
 	if ((int32_t)gpio < 0)
 	{
 	    fprintf(stderr, "bcm2835_init: mmap failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	// PWM
 	if ((pwmMem = malloc(BCM2835_BLOCK_SIZE + (BCM2835_PAGE_SIZE - 1))) == NULL)
 	{
 	    fprintf(stderr, "bcm2835_init: pwmMem malloc failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	mapaddr = pwmMem;
 	if (((uint32_t)mapaddr % BCM2835_PAGE_SIZE) != 0)
 	    mapaddr += BCM2835_PAGE_SIZE - ((uint32_t)mapaddr % BCM2835_PAGE_SIZE) ;
-    
+
 	pwm = (uint32_t *)mmap(mapaddr, BCM2835_BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, BCM2835_GPIO_PWM) ;
-    
+
 	if ((int32_t)pwm < 0)
 	{
 	    fprintf(stderr, "bcm2835_init: mmap failed (pwm): %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	// Clock control (needed for PWM)
 	if ((clkMem = malloc(BCM2835_BLOCK_SIZE + (BCM2835_PAGE_SIZE-1))) == NULL)
 	{
 	    fprintf(stderr, "bcm2835_init: clkMem malloc failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	mapaddr = clkMem;
 	if (((uint32_t)mapaddr % BCM2835_PAGE_SIZE) != 0)
 	    mapaddr += BCM2835_PAGE_SIZE - ((uint32_t)mapaddr % BCM2835_PAGE_SIZE) ;
-    
+
 	clk = (uint32_t *)mmap(mapaddr, BCM2835_BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, BCM2835_CLOCK_BASE) ;
-    
+
 	if ((int32_t)clk < 0)
 	{
 	    fprintf(stderr, "bcm2835_init: mmap failed (clk): %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	if ((padsMem = malloc(BCM2835_BLOCK_SIZE + (BCM2835_PAGE_SIZE - 1))) == NULL)
 	{
 	    fprintf(stderr, "bcm2835_init: padsMem malloc failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	mapaddr = padsMem;
 	if (((uint32_t)mapaddr % BCM2835_PAGE_SIZE) != 0)
 	    mapaddr += BCM2835_PAGE_SIZE - ((uint32_t)mapaddr % BCM2835_PAGE_SIZE) ;
-    
+
 	pads = (uint32_t *)mmap(mapaddr, BCM2835_BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, BCM2835_GPIO_PADS) ;
-    
+
 	if ((int32_t)pads < 0)
 	{
 	    fprintf(stderr, "bcm2835_init: mmap failed (pads): %s\n", strerror(errno)) ;
@@ -570,13 +570,13 @@ int bcm2835_init()
 	    fprintf(stderr, "bcm2835_init: spi0Mem malloc failed: %s\n", strerror(errno)) ;
 	    return 0;
 	}
-    
+
 	mapaddr = spi0Mem;
 	if (((uint32_t)mapaddr % BCM2835_PAGE_SIZE) != 0)
 	    mapaddr += BCM2835_PAGE_SIZE - ((uint32_t)mapaddr % BCM2835_PAGE_SIZE) ;
-    
+
 	spi0 = (uint32_t *)mmap(mapaddr, BCM2835_BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, BCM2835_SPI0_BASE) ;
-    
+
 	if ((int32_t)spi0 < 0)
 	{
 	    fprintf(stderr, "bcm2835_init: mmap failed (spi0): %s\n", strerror(errno)) ;
@@ -643,10 +643,10 @@ int bcm2835_close()
 	}
     }
     return 1; // Success
-}    
+}
 
 #ifdef BCM2835_TEST
-// this is a simple test program that prints out what it will do rather than 
+// this is a simple test program that prints out what it will do rather than
 // actually doing it
 int main(int argc, char **argv)
 {
@@ -674,13 +674,13 @@ int main(int argc, char **argv)
     {
 	// Turn it on
 	bcm2835_gpio_write(RPI_GPIO_P1_11, HIGH);
-	
+
 	// wait a bit
 	delay(500);
-	
+
 	// turn it off
 	bcm2835_gpio_write(RPI_GPIO_P1_11, LOW);
-	
+
 	// wait a bit
 	delay(500);
     }
@@ -693,7 +693,7 @@ int main(int argc, char **argv)
 	// Read some data
 	uint8_t value = bcm2835_gpio_lev(RPI_GPIO_P1_15);
 	printf("read from pin 15: %d\n", value);
-	
+
 	// wait a bit
 	delay(500);
     }

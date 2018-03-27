@@ -1393,7 +1393,7 @@ main ()
     if (strncmp(un.version, "V2", 2) == 0) {
 	printf ("i386-sequent-ptx2\n"); exit (0);
     }
-    if (strncmp(un.version, "V1", 2) == 0) { /* XXX is V1 correct? */
+    if (strncmp(un.version, "V1", 2) == 0) { 
 	printf ("i386-sequent-ptx1\n"); exit (0);
     }
     printf ("i386-sequent-ptx\n"); exit (0);

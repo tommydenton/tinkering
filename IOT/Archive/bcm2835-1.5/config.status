@@ -943,7 +943,7 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
   */*) ac_MKDIR_P=$ac_top_build_prefix$MKDIR_P ;;
   esac
 # If the template does not know about datarootdir, expand it.
-# FIXME: This hack should be removed a few years after 2.60.
+# This hack should be removed a few years after 2.60.
 ac_datarootdir_hack=; ac_datarootdir_seen=
 ac_sed_dataroot='
 /datarootdir/ {

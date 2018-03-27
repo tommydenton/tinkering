@@ -5466,7 +5466,7 @@ func_mode_link ()
 	;;
 
       -allow-undefined)
-	# FIXME: remove this flag sometime in the future.
+	# remove this flag sometime in the future.
 	func_fatal_error "\`-allow-undefined' must not be used because it is the default"
 	;;
 
@@ -6088,9 +6088,7 @@ func_mode_link ()
       # The preopen pass in lib mode reverses $deplibs; put it back here
       # so that -L comes before libs that need it for instance...
       if test "$linkmode,$pass" = "lib,link"; then
-	## FIXME: Find the place where the list is rebuilt in the wrong
-	##        order, and fix it there properly
-        tmp_deplibs=
+	    tmp_deplibs=
 	for deplib in $deplibs; do
 	  tmp_deplibs="$deplib $tmp_deplibs"
 	done
@@ -7114,7 +7112,7 @@ func_mode_link ()
 	  eval tmp_libs=\"\$$var\"
 	  new_libs=
 	  for deplib in $tmp_libs; do
-	    # FIXME: Pedantically, this is the right thing to do, so
+	    # Pedantically, this is the right thing to do, so
 	    #        that some nasty dependency loop isn't accidentally
 	    #        broken:
 	    #new_libs="$deplib $new_libs"
@@ -8205,11 +8203,6 @@ EOF
 	if test "X$skipped_export" != "X:" && test -n "$orig_export_symbols"; then
 	  # The given exports_symbols file has to be filtered, so filter it.
 	  func_verbose "filter symbol list for \`$libname.la' to tag DATA exports"
-	  # FIXME: $output_objdir/$libname.filter potentially contains lots of
-	  # 's' commands which not all seds can handle. GNU sed should be fine
-	  # though. Also, the filter scales superlinearly with the number of
-	  # global variables. join(1) would be nice here, but unfortunately
-	  # isn't a blessed tool.
 	  $opt_dry_run || $SED -e '/[ ,]DATA/!d;s,\(.*\)\([ \,].*\),s|^\1$|\1\2|,' < $export_symbols > $output_objdir/$libname.filter
 	  func_append delfiles " $export_symbols $output_objdir/$libname.filter"
 	  export_symbols=$output_objdir/$libname.def
@@ -8231,8 +8224,6 @@ EOF
 	  if test -n "$whole_archive_flag_spec" &&
 	    test "$compiler_needs_object" = yes &&
 	    test -z "$libobjs"; then
-	    # extract the archives, so we have objects to list.
-	    # TODO: could optimize this to just extract one archive.
 	    whole_archive_flag_spec=
 	  fi
 	  if test -n "$whole_archive_flag_spec"; then
@@ -8454,11 +8445,6 @@ EOF
 	    if test -n "$orig_export_symbols"; then
 	      # The given exports_symbols file has to be filtered, so filter it.
 	      func_verbose "filter symbol list for \`$libname.la' to tag DATA exports"
-	      # FIXME: $output_objdir/$libname.filter potentially contains lots of
-	      # 's' commands which not all seds can handle. GNU sed should be fine
-	      # though. Also, the filter scales superlinearly with the number of
-	      # global variables. join(1) would be nice here, but unfortunately
-	      # isn't a blessed tool.
 	      $opt_dry_run || $SED -e '/[ ,]DATA/!d;s,\(.*\)\([ \,].*\),s|^\1$|\1\2|,' < $export_symbols > $output_objdir/$libname.filter
 	      func_append delfiles " $export_symbols $output_objdir/$libname.filter"
 	      export_symbols=$output_objdir/$libname.def
@@ -9505,7 +9491,6 @@ func_mode_uninstall ()
 	      # Do each command in the old_postuninstall commands.
 	      func_execute_cmds "$old_postuninstall_cmds" 'test "$rmforce" = yes || exit_status=1'
 	    fi
-	    # FIXME: should reinstall the best remaining shared library.
 	    ;;
 	  esac
 	fi
