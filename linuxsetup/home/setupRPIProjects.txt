@@ -1,34 +1,46 @@
 #### How to setup Linux
 
-##TODO: Fix the path so copy and Paste work
-##TODO: Build one Stretch image with most of this in here.
+If using base image
+    copy ssh and wpa into /boot
+    change root
+    change pi
+    raspi-config
+      Change to CLI/force login
+      Change Local
+      Change Timezone
+      Change Keyboard
+      Expand the File System
+      Force audo through 2.5 mm Jack
+    Setup git
+      ssh-keygen -t rsa -b 4096 -C "tommydenton@gmail.com"
+      git config --global user.name "Thomas Denton"
+      git config --global user.email "tommydenton@gmail.com"
+      git config --global core.editor vi
+    Setup ssh
+      port 8997
+      authorized_keys
+    set hostname
+    Make like others:
+      git clone git@github.com:thomascoreapps/tinkering.git
+      cp /home/pi/tinkering/linuxsetup/home/.bashrc /home/pi/.bashrc
+      sudo cp /home/pi/tinkering/linuxsetup/etc/motd /etc/motd
+    Create authorized_keys
+    Reboot
+      cp /home/pi/tinkering/linuxsetup/home/.tmux.conf ~
+      install vim tmux
+    Do updates:
+      go
 
-copy ssh and wpa into /boot
-change root
-change pi
-set hostname
-raspi-config
-Setup git
-  ssh-keygen -t rsa -b 4096 -C "tommydenton@gmail.com"
-  git config --global user.name "Thomas Denton"
-  git config --global user.email "tommydenton@gmail.com"
-  git config --global core.editor vi
-Setup ssh
-  port 8997
-  authorized_keys
-Make like others:
-  git clone git@github.com:thomascoreapps/tinkering.git
-  cp .bashrc /home/pi/.bashrc
-  sudo cp motd /etc/motd
-  install vim tmux
-  cp .tmux.conf ~
-Do updates:
-  go
+If using updated image
+  Change hostname
+  Update ASCII art in motd
+  updated
+    go
 
 
 Tools:
 https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
-http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20\
+http://patorjk.com/software/taag/#p=display&f=Roman&t=Rename%20Me
 
 
 #### How to setup PITFT
