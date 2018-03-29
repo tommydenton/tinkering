@@ -1,0 +1,62 @@
+host *.coreapps.net
+  ForwardAgent yes
+  ServerAliveInterval 60
+  GSSAPIAuthentication no
+  GSSAPIKeyExchange no
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 5m
+
+host *.core-apps.com
+  ForwardAgent yes
+  ServerAliveInterval 60
+  GSSAPIAuthentication no
+  GSSAPIKeyExchange no
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 5m
+
+host *.core-apps.xyz
+  ForwardAgent yes
+  ServerAliveInterval 60
+  GSSAPIAuthentication no
+  GSSAPIKeyExchange no
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 5m
+
+host *
+  ForwardAgent yes
+  ServerAliveInterval 60
+  GSSAPIAuthentication no
+  GSSAPIKeyExchange no
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 5m
+
+
+host clockradio
+  HostName 192.168.1.233
+  Port 8997
+  User pi
+  IdentityFile ~/.ssh/id_rsa
+host example
+  HostName 192.168.1.xxx
+  Port 8997
+  User pi
+  IdentityFile ~/.ssh/id_rsa
+Host mcgann
+  HostName mcgann.coreapps.xyz
+  Port 8997
+  User coreapps
+  IdentityFile ~/.ssh/id_rsa
+host iot
+  HostName iot.tommydenton.com
+  Port 8997
+  User tdenton
+  IdentityFile ~/.ssh/id_rsa
+host ipiot
+  HostName 199.91.172.233
+  Port 8997
+  User tdenton
+  IdentityFile ~/.ssh/id_rsa

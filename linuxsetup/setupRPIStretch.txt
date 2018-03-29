@@ -1,0 +1,86 @@
+#### How to setup Linux
+
+If using base image
+    copy ssh and wpa into /boot
+    change root
+    change pi
+    raspi-config
+      Change to CLI/force login
+      Change Local
+      Change Timezone
+      Change Keyboard
+      Expand the File System
+      Force audo through 2.5 mm Jack
+    Setup git
+      ssh-keygen -t rsa -b 4096 -C "tommydenton@gmail.com"
+      git config --global user.name "Thomas Denton"
+      git config --global user.email "tommydenton@gmail.com"
+      git config --global core.editor vi
+    Setup ssh
+      port 8997
+      authorized_keys
+    set hostname
+    Make like others:
+      git clone git@github.com:thomascoreapps/tinkering.git
+      cp /home/pi/tinkering/linuxsetup/home/.bashrc /home/pi/.bashrc
+      sudo cp /home/pi/tinkering/linuxsetup/etc/motd /etc/motd
+    Create authorized_keys
+    Reboot
+      cp /home/pi/tinkering/linuxsetup/home/.tmux.conf ~
+      install vim tmux
+    Do updates:
+      go
+
+If using updated image
+  Change hostname
+  Update ASCII art in motd
+  updated
+    go
+
+
+Tools:
+https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
+http://patorjk.com/software/taag/#p=display&f=Roman&t=Rename%20Me
+
+
+#### How to setup PITFT
+
+https://github.com/adafruit/Adafruit-PiTFT-Helper/issues/19
+https://forums.adafruit.com/viewtopic.php?f=47&t=122926&p=629573#p629573
+
+ cd ~
+$ wget https://raw.githubusercontent.com/adafruit/Adafruit-PiTFT-Helper/master/adafruit-pitft-helper2.sh
+$ chmod +x adafruit-pitft-helper2.sh
+$ sudo ./adafruit-pitft-helper2.sh
+
+add export FRAMEBUFFER=/dev/fb1 to .profile
+https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/extras#boot-to-x-windows-on-pitft
+https://6ftdan.com/allyourdev/2017/03/12/installing-the-adafruit-2-8-tft-display-on-the-raspberry-pi/
+https://www.raspberrypi.org/forums/viewtopic.php?t=66184
+
+sudo apt-get install xserver-xorg-video-fbdev
+
+/usr/share/X11/xorg.conf.d/99-fbdev.conf
+
+Section "Device"
+  Identifier "myfb"
+  Driver "fbdev"
+  Option "fbdev" "/dev/fb1"
+EndSection
+
+
+Weather Station
+  https://github.com/adafruit/Adafruit_Python_DHT
+  https://github.com/bastienwirtz/Adafruit_Python_BMP
+  install weewx, copy in pihat.py etc, setup seperate logging
+  https://github.com/weewx/weewx/wiki/logging
+  Plugins forecast
+  https://github.com/weewx
+Weather Display
+  http://python-weather-api.googlecode.com/svn/trunk/
+
+  Research:
+    https://github.com/adafruit/Adafruit_Python_BME280
+    https://forums.adafruit.com/viewtopic.php?f=50&t=87469
+    https://github.com/adafruit/Adafruit_Python_BMP/pull/13
+    https://forums.adafruit.com/viewtopic.php?f=19&t=89049&start=15
