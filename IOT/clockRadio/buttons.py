@@ -325,17 +325,17 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
 
 
 
-else:                        # If the first parameter does not match the backend, the message appears
-  print "pripustne parametry:"
-  print "... -n fff.f       prime frequency setting"
-  print "... -sn fff.f LL   find the nearest station above the specified frequency"
-  print "... -sd fff.f LL   find the closest station below the specified frequency"
-  print "... -v LL          automatically listing all strong frequencies"
-  print "... -h0            Complete Mute Volume (MUTE)"
-  print "... -h1            to restore the volume"
-  print "... -t LL          search for help stations on GPIO ports"
-  print "... -p             switching pre-defined help stations"
-  print ""
-  print "  fff.f = frequency in MHz. Allowable values are between 87.5 and 108"
-  print "  LL    = the minimum signal strength (ADC_level) at which the signal is"
-  print "          when searching automatically after a station (0 to 15)"
+#else:                        # If the first parameter does not match the backend, the message appears
+#  print "pripustne parametry:"
+#  print "... -n fff.f       prime frequency setting"
+#  print "... -sn fff.f LL   find the nearest station above the specified frequency"
+#  print "... -sd fff.f LL   find the closest station below the specified frequency"
+#  print "... -v LL          automatically listing all strong frequencies"
+#  print "... -h0            Complete Mute Volume (MUTE)"
+#  print "... -h1            to restore the volume"
+#  print "... -t LL          search for help stations on GPIO ports"
+#  print "... -p             switching pre-defined help stations"
+#  print ""
+#  print "  fff.f = frequency in MHz. Allowable values are between 87.5 and 108"
+#  print "  LL    = the minimum signal strength (ADC_level) at which the signal is"
+#  print "          when searching automatically after a station (0 to 15)"
