@@ -18,12 +18,12 @@ GPIO.setmode(GPIO.BCM)
 # Buttons for changing Stations, common lead of ground
 
 pin_tlm = 26              # pin37 = GPIO26 (left button - Lower Freq)
-pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
+# pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
 
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
 GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 bus = smbus.SMBus(1)        # novejsi varianta RasPi (512MB)
@@ -157,34 +157,34 @@ def sken(freq , smer):
 
 # ================================================
 # subroutine for pushbutton stations
-def tlacitka():
+#def tlacitka():
 
-  tl_minus = 0
-  tl_plus  = 0
+#  tl_minus = 0
+#  tl_plus  = 0
 
-  print "... search ->>->>->>"
-  freq = sken(97.1, True)     #when starting a subroutine, the first station is searched from below
+#  print "... search ->>->>->>"
+#  freq = sken(97.1, True)     #when starting a subroutine, the first station is searched from below
 
 
 # When starting the subroutine, the first station is searched from below
-  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+#  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
 
-    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
-    tl_plus  = GPIO.input(pin_tlp)
+#    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
+#    tl_plus  = GPIO.input(pin_tlp)
 
-    if (tl_plus == 1):           # while pushing the PLUS button is looking for the closest higher station
-      print "... search ->>->>->>"
-      time.sleep(0.5)
-      if (tl_minus == 0):        # when the MINUS button is not pressed ...
-        freq = sken(freq, True)  # search for the nearest frequency
+#    if (tl_plus == 1):           # while pushing the PLUS button is looking for the closest higher station
+#      print "... search ->>->>->>"
+#      time.sleep(0.5)
+#      if (tl_minus == 0):        # when the MINUS button is not pressed ...
+#        freq = sken(freq, True)  # search for the nearest frequency
 
-    if (tl_minus == 1):          # pressing the MINUS button will search for the closest lower station
-      print "... search <<-<<-<<-"
-      time.sleep(0.5)
-      if(tl_plus == 0):          # when the PLUS button is not pressed ...
-        freq = sken(freq, False) # search for the closest frequency
+#    if (tl_minus == 1):          # pressing the MINUS button will search for the closest lower station
+#      print "... search <<-<<-<<-"
+#      time.sleep(0.5)
+#      if(tl_plus == 0):          # when the PLUS button is not pressed ...
+#        freq = sken(freq, False) # search for the closest frequency
 
-    time.sleep(0.1)
+#    time.sleep(0.1)
 
 
 
@@ -225,20 +225,20 @@ def prepinac():
   nastav_f(stanice[index][0])
 
     # main loop for testing two spreader keys
-  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+  while ((tl_minus == 0) #or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
     tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
-    tl_plus  = GPIO.input(pin_tlp)
+#    tl_plus  = GPIO.input(pin_tlp)
 
 
-    if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
-      time.sleep(0.5)
-      if (tl_minus == 0):               # when the MINUS button is not pressed ...
-        index = index + 1               # ... moves the index to the next station
-        if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
-          index = 0                     # ... sets the index to the beginning of the list
+#    if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
+#      time.sleep(0.5)
+#      if (tl_minus == 0):               # when the MINUS button is not pressed ...
+#        index = index + 1               # ... moves the index to the next station
+#        if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
+#          index = 0                     # ... sets the index to the beginning of the list
 
-        print stanice[index][1]
-        nastav_f(stanice[index][0])     # set the frequency of the current station
+#        print stanice[index][1]
+#        nastav_f(stanice[index][0])     # set the frequency of the current station
 
 
     if (tl_minus == 1):                 # Press the MINUS button to switch to the previous station in the list
