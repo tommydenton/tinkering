@@ -190,8 +190,11 @@ def sken(freq , smer):
 
     # ================================================
     # subroutine for switching preset stations using the buttons
+print ("before Prepinac")
 def prepinac():
+  print ("after Prepinac")
   def button(callback):
+    print ("after button")
     if GPIO.input(26) == GPIO.LOW:
       tl_minus = 0
       #tl_plus  = 0
