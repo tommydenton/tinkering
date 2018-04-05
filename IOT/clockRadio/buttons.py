@@ -195,7 +195,7 @@ def prepinac():
   print ("after Prepinac")
   def button(callback):
     print ("after button")
-    if GPIO.input(26) == GPIO.LOW:
+    if GPIO.input(26) == GPIO.HIGH:
       tl_minus = 0
       #tl_plus  = 0
 
