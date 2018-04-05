@@ -193,71 +193,66 @@ def sken(freq , smer):
 print ("before Prepinac")
 def prepinac():
   print ("after Prepinac")
-  def button(callback):
-    print ("after button")
-    if GPIO.input(26) == GPIO.HIGH:
-      tl_minus = 0
-      #tl_plus  = 0
+    tl_minus = 0
+    #tl_plus  = 0
 
 
-      # manually create a list of stations and their frequency
-      stanice = {}
-      stanice[0] = [97.1 , "KEGL"]
-      stanice[1] = [90.1 , "KERA"]
-      stanice[2] = [91.7 , "KKXT"]
-      stanice[3] = [92.5 , "KZPS"]
-      stanice[4] = [93.3 , "KLIF"]
-      stanice[5] = [97.1 , "KEGL"]
-      stanice[6] = [98.7 , "KLUV"]
-      stanice[7] = [100.3 , "KJKK"]
-      stanice[8] = [102.1 , "KDGE"]
-      stanice[9] = [102.9 , "KDMX"]
-      stanice[10] = [103.3 , "KESN"]
-      stanice[11] = [103.7 , "KVIL"]
-      stanice[12] = [105.3 , "KRLD"]
-      stanice[13] = [106.1 , "KHKS"]
-      stanice[14] = [89.3 , "KNON"]
-      # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
-      # in the variable "[index] [1]" is the station name with the appropriate index
+    # manually create a list of stations and their frequency
+    stanice = {}
+    stanice[0] = [97.1 , "KEGL"]
+    stanice[1] = [90.1 , "KERA"]
+    stanice[2] = [91.7 , "KKXT"]
+    stanice[3] = [92.5 , "KZPS"]
+    stanice[4] = [93.3 , "KLIF"]
+    stanice[5] = [97.1 , "KEGL"]
+    stanice[6] = [98.7 , "KLUV"]
+    stanice[7] = [100.3 , "KJKK"]
+    stanice[8] = [102.1 , "KDGE"]
+    stanice[9] = [102.9 , "KDMX"]
+    stanice[10] = [103.3 , "KESN"]
+    stanice[11] = [103.7 , "KVIL"]
+    stanice[12] = [105.3 , "KRLD"]
+    stanice[13] = [106.1 , "KHKS"]
+    stanice[14] = [89.3 , "KNON"]
+    # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
+    # in the variable "[index] [1]" is the station name with the appropriate index
 
 
-      pocet_stanic = len(stanice)
+    pocet_stanic = len(stanice)
 
-      index = 0                      # Set the frequency to the zero station when running the subroutine
-      print stanice[index][1]
-      nastav_f(stanice[index][0])
+    index = 0                      # Set the frequency to the zero station when running the subroutine
+    print stanice[index][1]
+    nastav_f(stanice[index][0])
 
-        # main loop for testing two spreader keys
-    #  while ((tl_minus == 0) #or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
-      tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
-    #    tl_plus  = GPIO.input(pin_tlp)
+      # main loop for testing two spreader keys
+  #  while ((tl_minus == 0) #or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
+    print pin_tlm
+  #    tl_plus  = GPIO.input(pin_tlp)
 
 
-    #    if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
-    #      time.sleep(0.5)
-    #      if (tl_minus == 0):               # when the MINUS button is not pressed ...
-    #        index = index + 1               # ... moves the index to the next station
-    #        if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
-    #          index = 0                     # ... sets the index to the beginning of the list
+  #    if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
+  #      time.sleep(0.5)
+  #      if (tl_minus == 0):               # when the MINUS button is not pressed ...
+  #        index = index + 1               # ... moves the index to the next station
+  #        if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
+  #          index = 0                     # ... sets the index to the beginning of the list
 
-    #        print stanice[index][1]
-    #        nastav_f(stanice[index][0])     # set the frequency of the current station
+  #        print stanice[index][1]
+  #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
-      if (tl_minus == 0):                   # Press the MINUS button to switch to the previous station in the list
-        time.sleep(0.5)
-        #if (tl_plus == 0):                 # when the PLUS button is not pressed ...
-        #  print "no press"
-        #  index = index - 1                # moves the index to the previous station
-        if (index < 0):                     # when the index "under" under the first station ...
-          index = (pocet_stanic-1)          # ... sets the index on the last station in the list
+    if (tl_minus == 0):                   # Press the MINUS button to switch to the previous station in the list
+      time.sleep(0.5)
+      #if (tl_plus == 0):                 # when the PLUS button is not pressed ...
+      #  print "no press"
+      #  index = index - 1                # moves the index to the previous station
+      if (index < 0):                     # when the index "under" under the first station ...
+        index = (pocet_stanic-1)          # ... sets the index on the last station in the list
 
-          print stanice[index][1]
-          nastav_f(stanice[index][0])       # set the frequency of the current station
+        print stanice[index][1]
+        nastav_f(stanice[index][0])       # set the frequency of the current station
 
-      time.sleep(0.1)
-    else:
-      GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-      GPIO.add_event_detect(26, GPIO.BOTH, callback=button)
+    time.sleep(0.1)
 
 
 
