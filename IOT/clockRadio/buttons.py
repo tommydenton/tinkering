@@ -241,17 +241,17 @@ def prepinac():
 #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
 
-    if (tl_minus == 1):                 # Press the MINUS button to switch to the previous station in the list
-      time.sleep(0.5)
-      if (tl_plus == 0):                # when the PLUS button is not pressed ...
-        index = index - 1               # moves the index to the previous station
-        if (index < 0):                 # when the index "under" under the first station ...
-          index = (pocet_stanic-1)      # ... sets the index on the last station in the list
+  if (tl_minus == 1):                 # Press the MINUS button to switch to the previous station in the list
+    time.sleep(0.5)
+    if (tl_plus == 0):                # when the PLUS button is not pressed ...
+      index = index - 1               # moves the index to the previous station
+      if (index < 0):                 # when the index "under" under the first station ...
+        index = (pocet_stanic-1)      # ... sets the index on the last station in the list
 
-        print stanice[index][1]
-        nastav_f(stanice[index][0])     # set the frequency of the current station
+      print stanice[index][1]
+      nastav_f(stanice[index][0])     # set the frequency of the current station
 
-    time.sleep(0.1)
+  time.sleep(0.1)
 
 
 
