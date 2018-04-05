@@ -226,8 +226,9 @@ def prepinac():
 
     # main loop for testing two spreader keys
 #  while ((tl_minus == 0) #or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
-  tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
+  tl_minus = GPIO.input(pin_tlm)         # read status of GPIO pins
   print pin_tlm
+  print ("fooy")
 #    tl_plus  = GPIO.input(pin_tlp)
 
 
