@@ -17,8 +17,8 @@ GPIO.setmode(GPIO.BOARD)
 # One lead each to GPI26 (pin37) and GPI20 (pin38)
 # Buttons for changing Stations, common lead of ground
 
-pin_tlm = 37               # pin37 = GPI26 (left button - Lower Freq)
-pin_tlp = 38               # pin38 = GPI20 (right button - Higher Freq)
+pin_tlm = 26              # pin37 = GPI26 (left button - Lower Freq)
+pin_tlp = 20               # pin38 = GPI20 (right button - Higher Freq)
 
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
@@ -156,33 +156,33 @@ def sken(freq , smer):
 
 
 # ================================================
-# podprogram pro vyhledavani stanic pomoci tlacitek
+# subroutine for pushbutton stations
 def tlacitka():
 
   tl_minus = 0
   tl_plus  = 0
 
-  print "... vyhledavani ->>->>->>"
-  freq = sken(87.5, True)     # pri spusteni podprogramu se vyhleda prvni stanice zdola
+  print "... search ->>->>->>"
+  freq = sken(97.1, True)     # pri spusteni podprogramu se vyhleda prvni stanice zdola
 
 
-  # hlavni smycka na testovani dvou rozpinacich tlacitek
-  while ((tl_minus == 0) or (tl_plus == 0)):  # kdyz jsou obe stlacena, nebo kdyz chybi, smycka se ukonci
+# When starting the subroutine, the first station is searched from below
+  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
 
-    tl_minus = GPIO.input(pin_tlm)            # cteni stavu tlacitek na GPIO pinech
+    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
     tl_plus  = GPIO.input(pin_tlp)
 
-    if (tl_plus == 1):           # pri stisku PLUS tlacitka se hleda nejblizsi vyssi stanice
-      print "... vyhledavani ->>->>->>"
+    if (tl_plus == 1):           # while pushing the PLUS button is looking for the closest higher station
+      print "... search ->>->>->>"
       time.sleep(0.5)
-      if (tl_minus == 0):        # kdyz neni stisknuto zaroven i MINUS tlacitko...
-        freq = sken(freq, True)  # vyhledej nejblizsi vyssi frekvenci
+      if (tl_minus == 0):        # when the MINUS button is not pressed ...
+        freq = sken(freq, True)  # search for the nearest frequency
 
-    if (tl_minus == 1):          # pri stisku MINUS tlacitka se hleda nejblizsi nizsi stanice
-      print "... vyhledavani <<-<<-<<-"
+    if (tl_minus == 1):          # pressing the MINUS button will search for the closest lower station
+      print "... search <<-<<-<<-"
       time.sleep(0.5)
-      if(tl_plus == 0):          # kdyz neni stisknuto zaroven i PLUS tlacitko...
-        freq = sken(freq, False) # vyhledej nejblizsi nizsi frekvenci
+      if(tl_plus == 0):          # when the PLUS button is not pressed ...
+        freq = sken(freq, False) # search for the closest frequency
 
     time.sleep(0.1)
 
@@ -198,7 +198,7 @@ def prepinac():
 
     # manually create a list of stations and their frequency
   stanice = {}
-  stanice[0] = [89.3 , "KNON"]
+  stanice[0] = [97.1 , "KEGL"]
   stanice[1] = [90.1 , "KERA"]
   stanice[2] = [91.7 , "KKXT"]
   stanice[3] = [92.5 , "KZPS"]
@@ -212,6 +212,7 @@ def prepinac():
   stanice[11] = [103.7 , "KVIL"]
   stanice[12] = [105.3 , "KRLD"]
   stanice[13] = [106.1 , "KHKS"]
+  stanice[14] = [89.3 , "KNON"]
 
   # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
   # in the variable "[index] [1]" is the station name with the appropriate index
