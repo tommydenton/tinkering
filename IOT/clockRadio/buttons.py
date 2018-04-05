@@ -299,8 +299,8 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
         #  if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
         #    index = 0                     # ... sets the index to the beginning of the list
 
-          print stanice[index][1]
-          nastav_f(stanice[index][0])     # set the frequency of the current station
+        print stanice[index][1]
+        nastav_f(stanice[index][0])     # set the frequency of the current station
 
       if (tl_minus == 1):                   # Press the MINUS button to switch to the previous station in the list
         time.sleep(0.5)
