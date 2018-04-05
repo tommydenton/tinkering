@@ -17,8 +17,8 @@ GPIO.setmode(GPIO.BOARD)
 # One lead each to GPI26 (pin37) and GPI20 (pin38)
 # Buttons for changing Stations, common lead of ground
 
-pin_tlm = 26              # pin37 = GPI26 (left button - Lower Freq)
-pin_tlp = 20               # pin38 = GPI20 (right button - Higher Freq)
+pin_tlm = 37              # pin37 = GPI26 (left button - Lower Freq)
+pin_tlp = 38               # pin38 = GPI20 (right button - Higher Freq)
 
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
