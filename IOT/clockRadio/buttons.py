@@ -253,11 +253,10 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  prepinac()
+  #prepinac()
       # ================================================
       # subroutine for switching preset stations using the buttons
   def prepinac():
-    print ("after Prepinac")
     tl_minus = 0
     #tl_plus  = 0
 
@@ -319,4 +318,4 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
           nastav_f(stanice[index][0])       # set the frequency of the current station
 
       time.sleep(0.1)
-  prepinac()
+      prepinac()
