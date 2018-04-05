@@ -23,7 +23,7 @@ pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
 GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 bus = smbus.SMBus(1)        # novejsi varianta RasPi (512MB)
@@ -163,7 +163,7 @@ def tlacitka():
   tl_plus  = 0
 
   print "... search ->>->>->>"
-  freq = sken(97.1, True)     # pri spusteni podprogramu se vyhleda prvni stanice zdola
+  freq = sken(97.1, True)     #when starting a subroutine, the first station is searched from below
 
 
 # When starting the subroutine, the first station is searched from below
