@@ -256,7 +256,7 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
   prepinac()
       # ================================================
       # subroutine for switching preset stations using the buttons
-  #def prepinac():
+  def prepinac():
     print ("after Prepinac")
     tl_minus = 0
     #tl_plus  = 0
