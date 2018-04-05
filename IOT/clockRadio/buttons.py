@@ -294,13 +294,10 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
       tl_plus  = GPIO.input(pin_tlp)
 
       if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
-        print pin_tlp
-        print ("Plus")
         time.sleep(0.5)
-        if (tl_minus == 0):               # when the MINUS button is not pressed ...
-          index = index + 1               # ... moves the index to the next station
-          if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
-            index = 0                     # ... sets the index to the beginning of the list
+        index = index + 1               # ... moves the index to the next station
+        #  if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
+        #    index = 0                     # ... sets the index to the beginning of the list
 
           print stanice[index][1]
           nastav_f(stanice[index][0])     # set the frequency of the current station
