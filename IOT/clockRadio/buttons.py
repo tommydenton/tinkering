@@ -58,7 +58,7 @@ def nastav_f(freq):
     data = bus.read_i2c_block_data( bajt0 , bajt1 )     # The precision of the data from the detection circuit will flatten the signal
     data[0] = bajt1r                # replace the first byte pretense with a self-declared value
 
-    print "frekvence= " + str(freq) + "MHz" , "\tDATA: " + str(data[0:5]) + "\t(signal strength:" + str(data[3]>>4) + ")"
+    print "frequency= " + str(freq) + "MHz" , "\tDATA: " + str(data[0:5]) + "\t(signal strength:" + str(data[3]>>4) + ")"
 
   return(freq)
 
@@ -241,16 +241,16 @@ def prepinac():
 #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
   print "about to go into the button"
-  if (tl_minus == 1):
+  if (tl_minus == 0):
     print "Before sleep"                 # Press the MINUS button to switch to the previous station in the list
     time.sleep(0.5)
     print "after sleep"
-    if (tl_plus == 0):                # when the PLUS button is not pressed ...
-      print "no press"
-      index = index - 1               # moves the index to the previous station
-      if (index < 0):                 # when the index "under" under the first station ...
-        print "go one down"
-        index = (pocet_stanic-1)      # ... sets the index on the last station in the list
+    #if (tl_plus == 0):                # when the PLUS button is not pressed ...
+    #  print "no press"
+    #  index = index - 1               # moves the index to the previous station
+    if (index < 0):                 # when the index "under" under the first station ...
+      print "go one down"
+      index = (pocet_stanic-1)      # ... sets the index on the last station in the list
 
       print stanice[index][1]
       nastav_f(stanice[index][0])     # set the frequency of the current station
