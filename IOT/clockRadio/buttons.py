@@ -241,19 +241,19 @@ def prepinac():
 #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
   print "about to go into the button"
-  if (tl_minus == 0):
-    print "Before sleep"                 # Press the MINUS button to switch to the previous station in the list
+  if (tl_minus == 0):                   # Press the MINUS button to switch to the previous station in the list
+    print "Before sleep"
     time.sleep(0.5)
     print "after sleep"
-    #if (tl_plus == 0):                # when the PLUS button is not pressed ...
+    #if (tl_plus == 0):                 # when the PLUS button is not pressed ...
     #  print "no press"
-    #  index = index - 1               # moves the index to the previous station
-    if (index < 0):                 # when the index "under" under the first station ...
+    #  index = index - 1                # moves the index to the previous station
+    if (index < 0):                     # when the index "under" under the first station ...
       print "go one down"
-      index = (pocet_stanic-1)      # ... sets the index on the last station in the list
+      index = (pocet_stanic-1)          # ... sets the index on the last station in the list
 
       print stanice[index][1]
-      nastav_f(stanice[index][0])     # set the frequency of the current station
+      nastav_f(stanice[index][0])       # set the frequency of the current station
   print "before second sleep"
   time.sleep(0.1)
 
@@ -320,7 +320,7 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  prepinac()
+  GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac())
 
 
 
