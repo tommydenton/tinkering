@@ -18,12 +18,12 @@ GPIO.setmode(GPIO.BCM)
 # Buttons for changing Stations, common lead of ground
 
 pin_tlm = 26              # pin37 = GPIO26 (left button - Lower Freq)
-# pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
+pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
 
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
 GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-# GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 bus = smbus.SMBus(1)        # novejsi varianta RasPi (512MB)
@@ -190,8 +190,7 @@ def sken(freq , smer):
 
     # ================================================
     # subroutine for switching preset stations using the buttons
-def prepinac(callback):
-  print "into p"
+def prepinac():
   tl_minus = 0
   #tl_plus  = 0
 
@@ -213,7 +212,6 @@ def prepinac(callback):
   stanice[12] = [105.3 , "KRLD"]
   stanice[13] = [106.1 , "KHKS"]
   stanice[14] = [89.3 , "KNON"]
-  print "past index"
   # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
   # in the variable "[index] [1]" is the station name with the appropriate index
 
@@ -226,7 +224,7 @@ def prepinac(callback):
 
     # main loop for testing two spreader keys
 #  while ((tl_minus == 0) #or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
-#    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
+    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
 #    tl_plus  = GPIO.input(pin_tlp)
 
 
@@ -240,21 +238,17 @@ def prepinac(callback):
 #        print stanice[index][1]
 #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
-  print "about to go into the button"
   if (tl_minus == 0):                   # Press the MINUS button to switch to the previous station in the list
-    print "Before sleep"
     time.sleep(0.5)
-    print "after sleep"
     #if (tl_plus == 0):                 # when the PLUS button is not pressed ...
     #  print "no press"
     #  index = index - 1                # moves the index to the previous station
     if (index < 0):                     # when the index "under" under the first station ...
-      print "go one down"
       index = (pocet_stanic-1)          # ... sets the index on the last station in the list
 
       print stanice[index][1]
       nastav_f(stanice[index][0])       # set the frequency of the current station
-  print "before second sleep"
+  
   time.sleep(0.1)
 
 
@@ -320,9 +314,4 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  if GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
-    print("love you tommy")
-  else:
-    GPIO.cleanup()
-
-print("goodbye!")
+  prepinac())
