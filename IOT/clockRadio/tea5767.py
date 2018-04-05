@@ -3,75 +3,75 @@
 
 # ovladani FM prijimace TEA5767 pres I2C komunikaci
 # posledni uprava 9.6.2013
+# Translated by Thomas Denton using Google Translate
 
-
-import smbus               # operace s I2C
-import time                # operace s casem (pauzy)
-import sys                 # zjistovani parametru prikazove radky 
-import RPi.GPIO as GPIO    # Ovladani GPIO vystupu v RasPi
+import smbus               # I^2C operations
+import time                # Time operations
+import sys                 # Interact with the Command Line
+import RPi.GPIO as GPIO    # GPI operations
 
 
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)   # cislovani podle hardwerovych pinu (1 az 26)
+GPIO.setmode(GPIO.BOARD)
 
-# tlacitka jsou rozpinaci, jeden spolecny vyvod maji na GND,
-#   zbyle vyvody jsou zapojeny na GPIO7 (pin26) a GPIO8 (pin24)
+# One lead each to GPIO7 (pin26) and GPIO8 (pin24)
+# Buttons for changing Stations, common lead of ground
 
-pin_tlm = 26               # pin26 = GPIO7 (leve tlacitko - odecitani frekvence)
-pin_tlp = 24               # pin24 = GPIO8 (prave tlacitko - pricitani frekvence)
+pin_tlm = 26               # pin26 = GPIO7 (left button - Lower Freq)
+pin_tlp = 24               # pin24 = GPIO8 (right button - Higher Freq)
 
 
-# nastaveni prislusnych GPIO  pinu jako vstupy s Pull-Up odpory
-GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)    
+# set the appropriate GPIO pin as inputs with Pull-Up resistors
+GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
-bus = smbus.SMBus(1)       # novejsi varianta RasPi (512MB)
+bus = smbus.SMBus(1)        # novejsi varianta RasPi (512MB)
 #bus = smbus.SMBus(0)       # starsi varianta RasPi (256MB)
 
 
 # ================================================
-# podprogram pro prime nastaveni pozadovane frekvence
+# subroutine for the prime setting of the desired frequency
 def nastav_f(freq):
 
-  if (freq >= 87.5 and freq <= 108):  # kdyz je frekvence v pripustnych mezich, zapise se do obvodu
+  if (freq >= 87.5 and freq <= 108):  # when the frequency is within the allowed intervals, write to the circuit
 
-    # prepocet frekvence na dva bajty (podle aplikacnich pokynu)
+    # frequency to two bytes (according to application instructions)
     freq14bit = int(4 * (freq * 1000000 + 225000)/32768)
     freqH = int(freq14bit / 256 )
     freqL = freq14bit & 0xFF
 
-                                 # popisy jednotlivych bitu v bajtech - viz. katalogovy list
-    bajt0 = 0x60                 # I2C adresa obvodu
-    bajt1 = freqH                # 1.bajt (MUTE bit ; frekvence H)
-    bajt2 = freqL                # 2.bajt (frekvence L)
+                                 # Byte bit descriptions - See. catalog sheet
+    bajt0 = 0x60                 # I2C address of the circuit
+    bajt1 = freqH                # 1.bajt (MUTE bit ; frequency H)
+    bajt2 = freqL                # 2.bajt (frequency L)
     bajt3 = 0b10110000           # 3.bajt (SUD  ;  SSL1,SSL2  ;  HLSI  ;  MS,MR,ML  ;  SWP1)
     bajt4 = 0b00010000           # 4.bajt (SWP2 ; STBY ;  BL ; XTAL ; SMUTE ; HCC ; SNC ; SI)
     bajt5 = 0b00000000           # 5.bajt (PLREFF  ;  DTC  ;  0;0;0;0;0;0)
 
     blokdat=[ bajt2 , bajt3 , bajt4 , bajt5 ]
-    bus.write_i2c_block_data( bajt0 , bajt1 , blokdat )   # nastaveni nove frekvence do obvodu
+    bus.write_i2c_block_data( bajt0 , bajt1 , blokdat )   # set the new frequency to the circuit
 
-    time.sleep(0.1)                 # chvili pockej, nez se vyhodnoti sila signalu
+    time.sleep(0.1)                 #It took a moment to assess the strength of the signal
 
-    bajt1r = bus.read_byte(bajt0)   # nacist prvni bajt (musi se cist samostatne)
-    data = bus.read_i2c_block_data( bajt0 , bajt1 )     # precteni dat z obvodu pro zjisteni urovne signalu 
-    data[0] = bajt1r                # nahradit prvni precteny bajt samostatne nactenou hodnotou
+    bajt1r = bus.read_byte(bajt0)   # nacist first byte (must be cleaned separately)
+    data = bus.read_i2c_block_data( bajt0 , bajt1 )     # The precision of the data from the detection circuit will flatten the signal
+    data[0] = bajt1r                # replace the first byte pretense with a self-declared value
 
-    print "frekvence= " + str(freq) + "MHz" , "\tDATA: " + str(data[0:5]) + "\t(Sila signalu:" + str(data[3]>>4) + ")"
+    print "frekvence= " + str(freq) + "MHz" , "\tDATA: " + str(data[0:5]) + "\t(signal strength:" + str(data[3]>>4) + ")"
 
   return(freq)
 
 # ================================================
-# podprogram pro vyhledavani nejblizsi stanice od zadane frekvence
+# Subroutine to find the closest station from the specified frequency
 def sken(freq , smer):
 
-  if (sys.argv[1] == "-v"):             # kdyz se vypisuji VSECHNY silne frekvence ...
-    jen_1_freq = False                  #     nehleda se jen jedna frekvence
+  if (sys.argv[1] == "-v"):             # when I report ALL MUCH frequencies ...
+    jen_1_freq = False                  # only one frequency is being searched
     try:
-      adc_limit = int(sys.argv[2])      # zjisti parametr minimalni urovne AD prevodniku pro autosken
+      adc_limit = int(sys.argv[2])      # find the parameter of the minimal level of AD for the autosken
     except:
-      adc_limit=7                       # kdyz chybi, nastavi se automaticky na 7
+      adc_limit=7                       # when it fails, it is automatically set to 7
 
   elif (sys.argv[1] == "-t"):           # v rezimu hledani pomoci tlacitek
     jen_1_freq = True                   #    se hleda jen jedna frekvence
@@ -86,10 +86,10 @@ def sken(freq , smer):
       adc_limit = int(sys.argv[3])      # zjisti parametr minimalni urovne AD prevodniku pro autosken
     except:
       adc_limit=7                       # kdyz chybi, nastavi se automaticky na 7
-  
-  
+
+
   if (adc_limit > 15 or adc_limit < 0): # vyhodnoceni, jestli je zadany limit v mezi 0 az 15
-    adc_limit = 7                       # kdyz je mimo, nastavi se automaticky na 7 
+    adc_limit = 7                       # kdyz je mimo, nastavi se automaticky na 7
 
   if (sys.argv[1] == "-v"):             # pri funkci automatickeho prohledani celeho pasma vytiskne info
     print "Zobrazuji frekvence, ktere maji silu signalu alespon " + str(adc_limit)
@@ -127,20 +127,20 @@ def sken(freq , smer):
     time.sleep(0.05)  # mezi jednotlivymi frekvencemi chvili pockej, nez se vyhodnoti sila signalu
 
     # precteni obsahu vsech registru
-    bajt1r = bus.read_byte(bajt0)                       # prvni bajt se musi cist samostatne 
+    bajt1r = bus.read_byte(bajt0)                       # prvni bajt se musi cist samostatne
     data = bus.read_i2c_block_data( bajt0 , bajt1 )     # nacteni vsech bajtu z obvodu
     data[0] = bajt1r                                    # prvni bajt se nahradi samostatne nactenou hodnotou
 
 
     sila = data[3] >> 4   # v nejvyssich 4 bitech ctvrteho baju (data[3]) je pri cteni registru uroven signalu
- 
+
     if (sila >= adc_limit):   # minimalni sila signalu, ktera bude povazovan za naladenou stanici (0 az 15)
       print "f= " + str(freq) + "MHz" , "\tDATA:" + str(data[0:5]) + "\t(Sila signalu: " + str(sila) + ")"
 
       if (mutebit == 0b10000000):   # zruseni pripadneho MUTE bitu po nalezeni stanice
         bajt1 = bajt1 & 0b01111111
         bus.write_i2c_block_data( bajt0 , bajt1  , blokdat )
-      
+
       if (jen_1_freq == True):  # kdyz se hleda jen jedna nejblizsi frekvence, tak se po nalezeni ukonci smycka while
         break
 
@@ -161,7 +161,7 @@ def tlacitka():
 
   tl_minus = 0
   tl_plus  = 0
- 
+
   print "... vyhledavani ->>->>->>"
   freq = sken(87.5, True)     # pri spusteni podprogramu se vyhleda prvni stanice zdola
 
@@ -208,14 +208,14 @@ def prepinac():
   stanice[7] = [106.4 , "CRo Ceske Budejovice"]
 
   #  v promenne "float(stanice[index][0])" je frekvence stanice s prislusnym indexem
-  #  v promenne "stanice[index][1]" je jmeno stanice s prislusnym indexem  
+  #  v promenne "stanice[index][1]" je jmeno stanice s prislusnym indexem
 
 
   pocet_stanic = len(stanice)
 
   index = 0                      # Pri spusteni podprogramu nastav frekvenci na nultou stanici
-  print stanice[index][1]      
-  nastav_f(stanice[index][0])  
+  print stanice[index][1]
+  nastav_f(stanice[index][0])
 
   # hlavni smycka na testovani dvou rozpinacich tlacitek
   while ((tl_minus == 0) or (tl_plus == 0)):  # kdyz jsou obe stlacena, nebo kdyz chybi, smycka se ukonci
@@ -229,8 +229,8 @@ def prepinac():
         index = index + 1        # ... presune se index na nasledujici stanici
         if (index > (pocet_stanic-1)):  # kdyz je potom index vetsi, nez pocet stanic ...
           index = 0                     #   ... nastavi se index na zacatek seznamu
- 
-        print stanice[index][1]        
+
+        print stanice[index][1]
         nastav_f(stanice[index][0])  # nastav frekvenci aktualni stanice
 
 
@@ -241,7 +241,7 @@ def prepinac():
         if (index < 0):          # kdyz index "podleze" pod prvni stanici ...
           index = (pocet_stanic-1)  # ... nastavi se index na posledni stanici v seznamu
 
-        print stanice[index][1]        
+        print stanice[index][1]
         nastav_f(stanice[index][0])  # nastav frekvenci aktualni stanice
 
     time.sleep(0.1)
@@ -251,17 +251,17 @@ def prepinac():
 
 
 # ================================================
-# zacatek programu - vyhodnoceni parametru prikazove radky
+# start of the program - evaluation of the command line parameter
 # ================================================
+# TODO: put in help function vs missing pram
 
-
-try:                        # pokud prvni parametr chybi, zobrazi se napoveda
+try:                        # if the first parameter is missing, the message is displayed
   parametr=sys.argv[1]
 except:
   parametr=""
 
 
-if (parametr=="-n"):        # prime nastaveni konkretni frekvence
+if (parametr=="-n"):        # prime setting of specific frequency
   try:
     freq= float(sys.argv[2])
   except:
@@ -269,54 +269,54 @@ if (parametr=="-n"):        # prime nastaveni konkretni frekvence
   nastav_f(freq)
 
 
-elif (parametr == "-sn"):    # automaticke skenovani "NAHORU" od zadane frekvence
+elif (parametr == "-sn"):    # automatic scanning "UP" from the specified frequency
   try:
     freq= float(sys.argv[2])
   except:
-    freq=87.5                # kdyz parametr chybi, nebo je chybny, nastavi se dolni hranice pasma
-  sken(freq, True)           # sken od zadane frekvence NAHORU
+    freq=87.5                # If the parameter is missing or is faulty, the lower limit of the pass is set
+  sken(freq, True)           # scan from specified frequency UP
 
 
 
-elif (parametr == "-sd"):    # automaticke skenovani "DOLU" od zadane frekvence
+elif (parametr == "-sd"):    # automatic scanning "DOWN" from entered frequency
   try:
     freq= float(sys.argv[2])
   except:
-    freq=108                 # kdyz parametr chybi, nebo je chybny, nastavi se horni hranice pasma
-  sken(freq, False ) # sken od zadane frekvence DOLU
+    freq=108                 # When the parameter is missing or is incorrect, the upper limit of the pass is set
+  sken(freq, False )         # scan from specified frequency DOWN
 
 
 
-elif (parametr == "-v"):     # automaticke vypis vsech silnych frekvenci
-  sken(87.5, True )          # sken od zacatku pasma NAHORU
+elif (parametr == "-v"):     # automatic listing of all strong frequencies
+  sken(87.5, True )          # scanned from the top of the TOP
 
 
 
-elif (parametr == "-h0"):    # ztlumit hlasitost
+elif (parametr == "-h0"):    # mute the volume
   bajt1 = bus.read_byte( 0x60 )
-  bajt1 = bajt1 | 0b10000000 
+  bajt1 = bajt1 | 0b10000000
   bus.write_byte(0x60,bajt1)
 
 
 
-elif (parametr == "-h1"):    # obnovit hlasitost
+elif (parametr == "-h1"):    # restore volume
   bajt1 = bus.read_byte( 0x60 )
-  bajt1 = bajt1 & 0b01111111 
+  bajt1 = bajt1 & 0b01111111
   bus.write_byte(0x60,bajt1)
 
 
 
-elif (parametr == "-t"):     # pouziti tlacitek na GPIO k automatickemu hledani nejblizsich stanic
+elif (parametr == "-t"):     # use the GPIO buttons to automatically search for the closest stations
   tlacitka()
 
 
 
-elif (parametr == "-p"):     # pouziti tlacitek na GPIO k prepinani predvolenych stanic
+elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
   prepinac()
 
 
 
-else:                        # pokud prvni parametr nevyhovuje zadne variante, zobrazi se napoveda
+else:                        # If the first parameter does not match the backend, the message appears
   print "pripustne parametry:"
   print "... -n fff.f       prime frequency setting"
   print "... -sn fff.f LL   find the nearest station above the specified frequency"
@@ -329,5 +329,4 @@ else:                        # pokud prvni parametr nevyhovuje zadne variante, z
   print ""
   print "  fff.f = frequency in MHz. Allowable values are between 87.5 and 108"
   print "  LL    = the minimum signal strength (ADC_level) at which the signal is"
-  print "           when searching automatically after a station (0 to 15)"
-  
+  print "          when searching automatically after a station (0 to 15)"
