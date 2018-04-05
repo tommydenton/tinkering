@@ -314,4 +314,4 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  prepinac())
+  prepinac()
