@@ -191,7 +191,7 @@ def sken(freq , smer):
     # ================================================
     # subroutine for switching preset stations using the buttons
 def prepinac():
-
+  print "into p"
   tl_minus = 0
   tl_plus  = 0
 
@@ -213,7 +213,7 @@ def prepinac():
   stanice[12] = [105.3 , "KRLD"]
   stanice[13] = [106.1 , "KHKS"]
   stanice[14] = [89.3 , "KNON"]
-
+  print "past index"
   # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
   # in the variable "[index] [1]" is the station name with the appropriate index
 
@@ -240,17 +240,21 @@ def prepinac():
 #        print stanice[index][1]
 #        nastav_f(stanice[index][0])     # set the frequency of the current station
 
-
-  if (tl_minus == 1):                 # Press the MINUS button to switch to the previous station in the list
+  print "about to go into the button"
+  if (tl_minus == 1):
+    print "Before sleep"                 # Press the MINUS button to switch to the previous station in the list
     time.sleep(0.5)
+    print "after sleep"
     if (tl_plus == 0):                # when the PLUS button is not pressed ...
+      print "no press"
       index = index - 1               # moves the index to the previous station
       if (index < 0):                 # when the index "under" under the first station ...
+        print "go one down"
         index = (pocet_stanic-1)      # ... sets the index on the last station in the list
 
       print stanice[index][1]
       nastav_f(stanice[index][0])     # set the frequency of the current station
-
+  print "before second sleep"
   time.sleep(0.1)
 
 
