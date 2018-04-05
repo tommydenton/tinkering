@@ -197,33 +197,34 @@ def prepinac():
 
 
     # manually create a list of stations and their frequency
-stanice[0] = [89.3 , "KNON"]
-stanice[1] = [90.1 , "KERA"]
-stanice[2] = [91.7 , "KKXT"]
-stanice[3] = [92.5 , "KZPS"]
-stanice[4] = [93.3 , "KLIF"]
-stanice[5] = [97.1 , "KEGL"]
-stanice[6] = [98.7 , "KLUV"]
-stanice[7] = [100.3 , "KJKK"]
-stanice[8] = [102.1 , "KDGE"]
-stanice[9] = [102.9 , "KDMX"]
-stanice[10] = [103.3 , "KESN"]
-stanice[11] = [103.7 , "KVIL"]
-stanice[12] = [105.3 , "KRLD"]
-stanice[13] = [106.1 , "KHKS"]
+  stanice = {}
+  stanice[0] = [89.3 , "KNON"]
+  stanice[1] = [90.1 , "KERA"]
+  stanice[2] = [91.7 , "KKXT"]
+  stanice[3] = [92.5 , "KZPS"]
+  stanice[4] = [93.3 , "KLIF"]
+  stanice[5] = [97.1 , "KEGL"]
+  stanice[6] = [98.7 , "KLUV"]
+  stanice[7] = [100.3 , "KJKK"]
+  stanice[8] = [102.1 , "KDGE"]
+  stanice[9] = [102.9 , "KDMX"]
+  stanice[10] = [103.3 , "KESN"]
+  stanice[11] = [103.7 , "KVIL"]
+  stanice[12] = [105.3 , "KRLD"]
+  stanice[13] = [106.1 , "KHKS"]
 
   # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
   # in the variable "[index] [1]" is the station name with the appropriate index
 
 
-pocet_stanic = len(stanice)
+  pocet_stanic = len(stanice)
 
-index = 0                      # Set the frequency to the zero station when running the subroutine
-print stanice[index][1]
-nastav_f(stanice[index][0])
+  index = 0                      # Set the frequency to the zero station when running the subroutine
+  print stanice[index][1]
+  nastav_f(stanice[index][0])
 
     # main loop for testing two spreader keys
-while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
     tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
     tl_plus  = GPIO.input(pin_tlp)
 
@@ -253,12 +254,9 @@ while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missi
 
 
 
-
-
 # ================================================
 # start of the program - evaluation of the command line parameter
 # ================================================
-# TODO: put in help function vs missing pram
 
 try:                        # if the first parameter is missing, the message is displayed
   parametr=sys.argv[1]
