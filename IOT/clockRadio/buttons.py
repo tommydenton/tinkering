@@ -227,13 +227,11 @@ def prepinac():
   # main loop for testing two spreader keys
   while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
     tl_minus = GPIO.input(pin_tlm)         # read status of GPIO pins
-    print pin_tlm
-    print ("fooy")
     tl_plus  = GPIO.input(pin_tlp)
-    print pin_tlp
-    print ("fooy")
 
     if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
+      print pin_tlp
+      print ("Plus")  
       time.sleep(0.5)
       if (tl_minus == 0):               # when the MINUS button is not pressed ...
         index = index + 1               # ... moves the index to the next station
@@ -245,6 +243,8 @@ def prepinac():
 
     if (tl_minus == 1):                   # Press the MINUS button to switch to the previous station in the list
       time.sleep(0.5)
+      print pin_tlm
+      print ("Minus")
       if (tl_plus == 0):                 # when the PLUS button is not pressed ...
         index = index - 1                # moves the index to the previous station
       if (index < 0):                     # when the index "under" under the first station ...
