@@ -190,7 +190,7 @@ def sken(freq , smer):
 
     # ================================================
     # subroutine for switching preset stations using the buttons
-def prepinac():
+def prepinac(callback):
   print "into p"
   tl_minus = 0
   tl_plus  = 0
