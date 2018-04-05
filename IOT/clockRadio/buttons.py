@@ -322,9 +322,6 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
   try:
     GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
-
-
-
 #else:                        # If the first parameter does not match the backend, the message appears
 #  print "pripustne parametry:"
 #  print "... -n fff.f       prime frequency setting"
