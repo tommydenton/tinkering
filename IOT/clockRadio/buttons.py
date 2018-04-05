@@ -256,7 +256,7 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
   #prepinac()
       # ================================================
       # subroutine for switching preset stations using the buttons
-  #def prepinac():
+  def prepinac():
     tl_minus = 0
     #tl_plus  = 0
 
@@ -318,3 +318,14 @@ elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset station
           nastav_f(stanice[index][0])       # set the frequency of the current station
 
       time.sleep(0.1)
+
+try:
+  GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
+  GPIO.add_event_detect(20, GPIO.BOTH, callback=prepinac)
+
+  message = raw_input('\nPress any key to exit.\n')
+
+finally:
+  GPIO.cleanup()
+
+print("Goodbye!")
