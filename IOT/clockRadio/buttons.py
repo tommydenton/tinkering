@@ -320,6 +320,9 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  try:
+  if:
     GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
-    
+  else:
+    GPIO.cleanup()
+
+print("goodbye!")
