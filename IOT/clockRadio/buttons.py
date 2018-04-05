@@ -193,7 +193,7 @@ def sken(freq , smer):
 def prepinac(callback):
   print "into p"
   tl_minus = 0
-  tl_plus  = 0
+  #tl_plus  = 0
 
 
     # manually create a list of stations and their frequency
@@ -320,7 +320,8 @@ elif (parametr == "-t"):     # use the GPIO buttons to automatically search for 
 
 
 elif (parametr == "-p"):     # Use the GPIO buttons to switch the preset stations
-  GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
+  try:
+    GPIO.add_event_detect(26, GPIO.BOTH, callback=prepinac)
 
 
 
