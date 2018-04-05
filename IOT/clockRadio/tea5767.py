@@ -95,7 +95,7 @@ def sken(freq , smer):
     print "Zobrazuji frekvence, ktere maji silu signalu alespon " + str(adc_limit)
 
 
-  # hlavni smycka s kontrolou, jestli je frekvence v pripustnych mezich
+# main loop with control if the frequency is within the allowed intervals
   while (freq >= 87.5 and freq <= 108):  # kdyz je frekvence mimo povoleny rozsah, smycka se ukonci
 
     if(smer == True):    # podle smeru skenovani se bud pridava nebo ubira 100kHz
@@ -188,61 +188,66 @@ def tlacitka():
 
 
 
-# ================================================
-# podprogram pro prepinani predvolenych stanic pomoci tlacitek
+    # ================================================
+    # subroutine for switching preset stations using the buttons
 def prepinac():
 
   tl_minus = 0
   tl_plus  = 0
 
 
-  # rucne vytvoreny seznam stanic a jejich frekvenci
-  stanice = {}
-  stanice[0] = [93.1  , "Radiozurnal"]
-  stanice[1] = [94.1  , "Frekvence 1"]
-  stanice[2] = [95    , "Blanik"]
-  stanice[3] = [97.7  , "Kiss JC"]
-  stanice[4] = [101.1 , "Radio Orlik"]
-  stanice[5] = [103.2 , "CRo 2 - Praha"]
-  stanice[6] = [105.5 , "Evropa 2"]
-  stanice[7] = [106.4 , "CRo Ceske Budejovice"]
+    # manually create a list of stations and their frequency
+stanice[0] = [89.3 , "KNON"]
+stanice[1] = [90.1 , "KERA"]
+stanice[2] = [91.7 , "KKXT"]
+stanice[3] = [92.5 , "KZPS"]
+stanice[4] = [93.3 , "KLIF"]
+stanice[5] = [97.1 , "KEGL"]
+stanice[6] = [98.7 , "KLUV"]
+stanice[7] = [100.3 , "KJKK"]
+stanice[8] = [102.1 , "KDGE"]
+stanice[9] = [102.9 , "KDMX"]
+stanice[10] = [103.3 , "KESN"]
+stanice[11] = [103.7 , "KVIL"]
+stanice[12] = [105.3 , "KRLD"]
+stanice[13] = [106.1 , "KHKS"]
 
-  #  v promenne "float(stanice[index][0])" je frekvence stanice s prislusnym indexem
-  #  v promenne "stanice[index][1]" je jmeno stanice s prislusnym indexem
+  # in the variable "float ([index] [0])" is the frequency of the station with the appropriate index
+  # in the variable "[index] [1]" is the station name with the appropriate index
 
 
   pocet_stanic = len(stanice)
 
-  index = 0                      # Pri spusteni podprogramu nastav frekvenci na nultou stanici
+  index = 0                      # Set the frequency to the zero station when running the subroutine
   print stanice[index][1]
   nastav_f(stanice[index][0])
 
-  # hlavni smycka na testovani dvou rozpinacich tlacitek
-  while ((tl_minus == 0) or (tl_plus == 0)):  # kdyz jsou obe stlacena, nebo kdyz chybi, smycka se ukonci
-    tl_minus = GPIO.input(pin_tlm)            # cteni stavu tlacitek na GPIO pinech
+    # main loop for testing two spreader keys
+  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+    tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
     tl_plus  = GPIO.input(pin_tlp)
 
 
-    if (tl_plus == 1):           # pri stisku PLUS tlacitka se prepne na nasledujici stanici v seznamu
+    if (tl_plus == 1):                  # Press the PLUS button to switch to the next station in the list
       time.sleep(0.5)
-      if (tl_minus == 0):        # kdyz neni stisknuto zaroven i MINUS tlacitko...
-        index = index + 1        # ... presune se index na nasledujici stanici
-        if (index > (pocet_stanic-1)):  # kdyz je potom index vetsi, nez pocet stanic ...
-          index = 0                     #   ... nastavi se index na zacatek seznamu
+      if (tl_minus == 0):               # when the MINUS button is not pressed ...
+        index = index + 1               # ... moves the index to the next station
+        if (index > (pocet_stanic-1)):  # when the index is higher than the number of stations ...
+          index = 0                     # ... sets the index to the beginning of the list
 
         print stanice[index][1]
-        nastav_f(stanice[index][0])  # nastav frekvenci aktualni stanice
+        nastav_f(stanice[index][0])     # set the frequency of the current station
 
 
-    if (tl_minus == 1):          # pri stisku MINUS tlacitka se prepne na predchozi stanici v seznamu
+    if (tl_minus == 1):                 # Press the MINUS button to switch to the previous station in the list
       time.sleep(0.5)
-      if (tl_plus == 0):         # kdyz neni stisknuto zaroven i PLUS tlacitko...
-        index = index - 1        # ... presune se index na predchozi stanici
-        if (index < 0):          # kdyz index "podleze" pod prvni stanici ...
-          index = (pocet_stanic-1)  # ... nastavi se index na posledni stanici v seznamu
+      if (tl_plus == 0):                # when the PLUS button is not pressed ...
+        index = index - 1               # moves the index to the previous station
+        if (index < 0):                 # when the index "under" under the first station ...
+          index = (pocet_stanic-1)      # ... sets the index on the last station in the list
 
         print stanice[index][1]
-        nastav_f(stanice[index][0])  # nastav frekvenci aktualni stanice
+        nastav_f(stanice[index][0])     # set the frequency of the current station
 
     time.sleep(0.1)
 
