@@ -23,7 +23,7 @@ pin_tlp = 20               # pin38 = GPIO20 (right button - Higher Freq)
 
 # set the appropriate GPIO pin as inputs with Pull-Up resistors
 GPIO.setup(pin_tlm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(pin_tlp, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
 bus = smbus.SMBus(1)        # novejsi varianta RasPi (512MB)
