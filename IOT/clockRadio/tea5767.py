@@ -216,14 +216,14 @@ stanice[13] = [106.1 , "KHKS"]
   # in the variable "[index] [1]" is the station name with the appropriate index
 
 
-  pocet_stanic = len(stanice)
+pocet_stanic = len(stanice)
 
-  index = 0                      # Set the frequency to the zero station when running the subroutine
-  print stanice[index][1]
-  nastav_f(stanice[index][0])
+index = 0                      # Set the frequency to the zero station when running the subroutine
+print stanice[index][1]
+nastav_f(stanice[index][0])
 
     # main loop for testing two spreader keys
-  while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
+while ((tl_minus == 0) or (tl_plus == 0)):  # when both are pushed or when missing, the loop will terminate
     tl_minus = GPIO.input(pin_tlm)            # read status of GPIO pins
     tl_plus  = GPIO.input(pin_tlp)
 
