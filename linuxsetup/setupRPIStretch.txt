@@ -41,7 +41,8 @@ If using updated image
 Tools:
 https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
 http://patorjk.com/software/taag/#p=display&f=Roman&t=Rename%20Me
-
+https://dev.to/saltyshiomix/a-guide-for-upgrading-macos-to-catalina-and-migrating-the-default-shell-from-bash-to-zsh-4ep3
+https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 
 #### How to setup PITFT
 
@@ -57,6 +58,7 @@ add export FRAMEBUFFER=/dev/fb1 to .profile
 https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/extras#boot-to-x-windows-on-pitft
 https://6ftdan.com/allyourdev/2017/03/12/installing-the-adafruit-2-8-tft-display-on-the-raspberry-pi/
 https://www.raspberrypi.org/forums/viewtopic.php?t=66184
+
 
 sudo apt-get install xserver-xorg-video-fbdev
 
