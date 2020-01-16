@@ -41,6 +41,7 @@ If using updated image
 Tools:
 https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
 http://patorjk.com/software/taag/#p=display&f=Roman&t=Rename%20Me
+https://dev.to/saltyshiomix/a-guide-for-upgrading-macos-to-catalina-and-migrating-the-default-shell-from-bash-to-zsh-4ep3
 
 
 #### How to setup PITFT
