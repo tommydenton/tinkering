@@ -1,11 +1,16 @@
-[] - Walk at least a mile
-[] - drink two junks of water
-[] - take vitamins
-[] - Clear Redmine Queue
-[] - Clear Tasks in outlook
-[] - Clear todo in Gmail
+[x] - Pay House Payment
+[x] - Pay Car
+[x] - Pay Chase
+[x] - Pay TXU
+[x] - Pay BBT
+[x] - Pay Verizon
+[] - Pay Spectrum
+[x] - Process Expenses
+[] - Pay Water
+[] - Pay Solar
+[] - Pay Well Fargo
 
-
+[>] - Pay Gieco (March and September)
 
 Key:
 - []: Todo
