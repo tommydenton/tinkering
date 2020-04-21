@@ -1,10 +1,38 @@
-- [], - [ ]: Todo
-- [X], - [x]: Done
+| Index | Future Log | Month Log |
+
+[] Clean Smoker
+[] Garage ToDo
+[] Rebuild Garage Door Enclosure
+    [] Pegboard all around
+    [] Larger shelf in back
+[]Redo plug structure
+[]Work out wiring
+    [] Door to Opener
+    [] Opener to plug tools
+[]Fix Tool power Strip
+[]Parts List
+    [] More Pegboard
+    [] Speakers
+    [] Single plugs x 4
+    [] Single plug Boxes
+    [] Switch plates (like name plates)
+        [] Up/Down
+        [] Overhead lights
+        [] Fans
+        [] Chargers
+    [] Ammo Can
+
+| Index | Future Log | Month Log |
+
+Key:
+- []: Todo
+- [x]: Done
 - [V]: Done, but on a different day (Date of completion)
-       (Date or reference goes in parentheses at the end of the line)
 - [>]: Next / Scheduled
 - [<]: Migrated
 - [/]: Right now / In progress
-- [O], - [o]: Waiting on someone else
+- [O]: Waiting on someone else
 
-- O A description of an event
+* = Priority
+! = Inspiration
+ø = Requires research or discovery (Option-o)
