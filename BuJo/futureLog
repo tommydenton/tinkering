@@ -1,0 +1,10 @@
+- [], - [ ]: Todo
+- [X], - [x]: Done
+- [V]: Done, but on a different day (Date of completion)
+       (Date or reference goes in parentheses at the end of the line)
+- [>]: Next / Scheduled
+- [<]: Migrated
+- [/]: Right now / In progress
+- [O], - [o]: Waiting on someone else
+
+- O A description of an event
