@@ -1,0 +1,376 @@
+<html>
+
+<head>
+</head>
+<style>
+    html {
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background: #fff;
+        line-height: 1.3;
+        font-size: 14px;
+        font-family: Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .screen-wrap {
+        margin: 0;
+        padding: 10px;
+        max-width: 800px;
+        box-sizing: border-box;
+    }
+    
+    .header-center {
+        display: block;
+        margin: auto;
+        text-align: center;
+    }
+    
+    ul {
+        padding-left: 2.0em;
+    }
+    
+    li {
+        margin: 0.1em 0;
+    }
+    
+    .button {
+        display: block;
+        margin: 0 0 0 30px;
+    }
+    
+    .button a {
+        color: rgb(255, 255, 255);
+        /* Dashboard Button Text Color */
+        background-color: rgb(0, 153, 153);
+        /* Dashboard Button Background Color */
+        text-decoration: none;
+        border-radius: 100px;
+        padding: 5px;
+    }
+    /*BUTTONS STYLES */
+    
+    .sb-row {
+        margin: 0px;
+        width: 100%;
+        padding: 0px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        /*notice these columns are not designed to wrap or be responsive*/
+    }
+    
+    .sb-half-column {
+        margin: 0px;
+        flex: 1;
+        overflow: hidden;
+    }
+    
+    .sb-third-column {
+        margin: 0px;
+        flex: 1;
+    }
+    /* start button 1-a even width and height buttons */
+    /*can be used inside of flex container for any amount of columns */
+    /*height of button determined by padding - all buttons in a row will scale height to match largest */
+    /* height or row can be set explicitly - buttons will scale up or down to match */
+    
+    .sb-button-a {
+        justify-content: flex-start;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 18px 8px 24px;
+        padding-top: 44px;
+        /*contributes to height of button - width determined by parent container and content of largest button */
+        text-align: center;
+    }
+    
+    .sb-button-a>span {
+        margin: 0;
+        width: 100%;
+    }
+    
+    .sb-button-a span.button-element {
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    .sb-button-a img {
+        width: auto;
+        height: 1.8rem;
+        /*size of button - width scales auto with height */
+        margin-bottom: 18px;
+    }
+    /*end button 1-a */
+    /* button 2 large - round corners  colors set in individual buttons */
+    /* fixed width in pixels */
+    
+    a.sb-button-b,
+    a:hover.sb-button-b {
+        display: inline-block;
+        color: #fff;
+        background-color: #aaa;
+        text-align: center;
+        width: 140px;
+        /*width of button */
+        border-radius: 4px;
+        padding-top: 18px;
+        /* height of button */
+        padding-bottom: 18px;
+        /* height of button */
+        text-decoration: none;
+    }
+    
+    a.sb-button-b img,
+    a:hover.sb-button-b img {
+        width: auto;
+        height: 1.6rem;
+        /* height of icon image */
+        display: inline-block;
+        margin: 0px;
+        padding: 0 0 6px 0;
+        /* space between icon and text */
+    }
+    /*end button 2 */
+    /* button 3 small - horizontal layout  colors set in individual buttons */
+    /* fixed width in pixels */
+    
+    a.sb-button-c,
+    a:hover.sb-button-c {
+        display: flex;
+        color: #fff;
+        background-color: #aaa;
+        text-align: center;
+        width: 140px;
+        /*width of button */
+        border-radius: 4px;
+        padding-top: 8px;
+        /* adjust height of button */
+        padding-bottom: 8px;
+        /* adjust height of button */
+        text-decoration: none;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    a.sb-button-c img,
+    a:hover.sb-button-c img {
+        width: auto;
+        height: 1.6rem;
+        /* size of icon image */
+        display: inline-block;
+        margin: 0px;
+        padding: 0 6px 0 0;
+        /* space between icon and text */
+    }
+    /*end button 3 */
+    
+    .bottom-bar {
+        display: flex;
+        background-color: green;
+        padding: 8px 4px;
+    }
+    
+    .bottom-bar a {
+        color: #fff;
+        text-decoration: none
+    }
+    
+    .bottom-bar-left {
+        flex-shrink: 1;
+    }
+    
+    .bottom-bar-center {
+        flex-grow: 2;
+        text-align: center;
+    }
+    
+    .bottom-bar-right {
+        flex-shrink: 1;
+    }
+</style>
+
+<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div class="screen-wrap">
+
+        <!--begin row-->
+        <div style="display:flex;">
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:blue;">
+                <span>
+                  <span class="button-element"><img src="[[home.png]]" alt="Home" /></span>
+                </span>
+                <span>
+                  <span class="button-element">HOME</span>
+                </span>
+            </a>
+            <!-- button end -->
+
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:green;">
+                <span>
+                  <span class="button-element"><img src="[[support.png]]" alt="support" /></span>
+                </span>
+                <span>
+                  <span class="button-element">SUPPORT<br />LINE TWO</span>
+                </span>
+            </a>
+            <!-- button end -->
+        </div>
+        <!--end row-->
+        <!--begin row-->
+        <div style="display:flex;">
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:red;">
+                <span>
+                  <span class="button-element"><img src="[[info.png]]" alt="info" /></span>
+                </span>
+                <span>
+                  <span class="button-element">INFO<br />LINE TWO<br /> LINE THREE</span>
+                </span>
+            </a>
+            <!-- button end -->
+
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:orange;">
+                <span>
+                  <span class="button-element"><img src="[[mail.png]]" alt="contact" /></span>
+                </span>
+                <span>
+                  <span class="button-element">CONTACT<br />LINE TWO</span>
+                </span>
+            </a>
+            <!-- button end -->
+        </div>
+        <!--end row-->
+        <!--start bottom bar-->
+        <div class="bottom-bar">
+            <div class="bottom-bar-left">
+                <a href="#"><img src="[[info.png]]" alt="icon" style="height:1.4rem;" /></a>
+            </div>
+            <div class="bottom-bar-center"><a href="#">center link</a></div>
+            <div class="bottom-bar-right">
+                <a href="#"><img src="[[support.png]]" alt="icon" style="height:1.4rem;" /></a>
+            </div>
+        </div>
+        <!--end bottom bar-->
+
+        <p> </p>
+        <p> </p>
+        <p> </p>
+
+        <!--begin row 3 columns-->
+        <div style="display:flex;">
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:green;">
+                <span>
+                  <span class="button-element"><img src="[[home.png]]" alt="home" /></span>
+                </span>
+                <span>
+                  <span class="button-element">HOME</span>
+                </span>
+            </a>
+            <!-- button end -->
+
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:blue;">
+                <span>
+                  <span class="button-element"><img src="[[support.png]]" alt="support" /></span>
+                </span>
+                <span>
+                  <span class="button-element">SUPPORT<br />LINE TWO</span>
+                </span>
+            </a>
+            <!-- button end -->
+
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:orange;">
+                <span>
+                  <span class="button-element"><img src="[[info.png]]" alt="info" /></span>
+                </span>
+                <span>
+                  <span class="button-element">INFO<br />LINE TWO</span>
+                </span>
+            </a>
+            <!-- button end -->
+        </div>
+        <!--end row-->
+
+        <p> </p>
+        <p> </p>
+        <p> </p>
+
+        <!--begin row 2 columns fixed height-->
+        <div style="display:flex; height:200px;">
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:green;">
+                <span>
+                  <span class="button-element"><img src="[[home.png]]" alt="home" /></span>
+                </span>
+                <span>
+                  <span class="button-element">HOME</span>
+                </span>
+            </a>
+            <!-- button end -->
+
+            <!-- button start -->
+            <a href="#" class="sb-button-a" style="background-color:blue;">
+                <span>
+                  <span class="button-element"><img src="[[support.png]]" alt="support" /></span>
+                </span>
+                <span>
+                  <span class="button-element">SUPPORT<br />LINE TWO</span>
+                </span>
+            </a>
+            <!-- button end -->
+        </div>
+        <!--end row-->
+        <p></p>
+        <p></p>
+
+        <div class="sb-row" style="margin-top:48px;">
+
+            <div class="sb-third-column">
+                <!-- button start -->
+                <a href="#" class="sb-button-b" style="background-color:green;">
+                    <img src="[[home.png]]" alt="Home" /><br /> HOME
+                </a>
+                <!-- button end -->
+            </div>
+            <div class="sb-third-column">
+                <!-- button start -->
+                <a href="#" class="sb-button-c" style="background-color:orange;">
+                    <img src="[[info.png]]" alt="Info" /> INFO
+                </a>
+                <!-- button end -->
+            </div>
+            <div class="sb-third-column">
+                <!-- button start -->
+                <a href="#" class="sb-button-c" style="background-color:red;">
+                    <img src="[[support.png]]" alt="Support" /> SUPPORT
+                </a>
+                <!-- button end -->
+            </div>
+
+        </div>
+        <!--row-->
+
+        <p> </p>
+        <p> </p>
+        <p> </p>
+    </div>
+</body>
+
+</html>
