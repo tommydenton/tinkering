@@ -1,10 +1,11 @@
-[] - Walk at least a mile
+[x] - Walk at least a mile
 [] - drink two junks of water
 [] - take vitamins
 [] - Clear Redmine Queue
 [] - Clear Tasks in outlook
 [] - Clear todo in Gmail
-
+[] Schedule next meeting with Bryan and James
+    [] set them up with Admin
 
 
 Key:
