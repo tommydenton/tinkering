@@ -1,0 +1,73 @@
+#define RED 4
+#define YELLOW 3
+#define GREEN 2
+
+
+void setup() {
+  
+delay(750);
+
+pinMode(RED, OUTPUT);     // RED
+pinMode(YELLOW, OUTPUT);  // YELLOW
+pinMode(GREEN, OUTPUT);   // GREEN
+
+digitalWrite(RED, LOW); 
+digitalWrite(YELLOW, LOW); 
+digitalWrite(GREEN, LOW); 
+
+
+}
+
+
+void RED_ON (int delay_ms) {
+
+digitalWrite(RED, HIGH); 
+delay(delay_ms);  
+}
+
+void YELLOW_ON (int delay_ms) {
+
+digitalWrite(YELLOW, HIGH); 
+delay(delay_ms);  
+}
+
+void GREEN_ON (int delay_ms) {
+
+digitalWrite(GREEN, HIGH); 
+delay(delay_ms);  
+}
+
+
+void RED_OFF () {
+  
+digitalWrite(RED, LOW); 
+}
+
+void YELLOW_OFF () {
+  
+digitalWrite(YELLOW, LOW); 
+}
+
+void GREEN_OFF () {
+  
+digitalWrite(GREEN, LOW); 
+}
+
+
+void loop() {
+
+RED_ON (5000);
+
+YELLOW_ON (3000);
+YELLOW_OFF();
+RED_OFF();
+
+GREEN_ON(5000);
+GREEN_OFF();
+
+YELLOW_ON(3000);
+YELLOW_OFF();
+
+
+  
+}
