@@ -47,7 +47,19 @@ while True:
 		time.sleep(1) 
 		GPIO.output(20,GPIO.LOW) #red
 		GPIO.output(16,GPIO.LOW) #green
-		time.sleep(.1)
+		time.sleep(.5)
 		GPIO.output(20,GPIO.HIGH) #red
 		GPIO.output(16,GPIO.HIGH) #green
-		time.sleep(2)
+		time.sleep(.5)
+		GPIO.output(20,GPIO.LOW) #red
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.LOW) #red
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(.5)
