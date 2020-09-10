@@ -19,35 +19,6 @@ GPIO.setup(0,GPIO.OUT) #reset button
 GPIO.setup(2,GPIO.OUT) #start button
 
 def say_hello_reset():
-    print("Hello! reset")
-
-def say_goodbye_reset():
-    print("Goodbye! reset")
-
-def say_hello_start():
-    print("Hello! start")
-
-def say_goodbye_start():
-    print("Goodbye! start")
-
-button = Button(0)
-
-button.when_pressed = say_hello_reset
-button.when_released = say_goodbye_reset
-
-button = Button(2)
-
-button.when_pressed = say_hello_start
-button.when_released = say_goodbye_start
-
-
-pause()
-
-
-
-
-
-while True:
 	GPIO.output(18,GPIO.LOW) 
 	GPIO.output(23,GPIO.LOW) 
 	GPIO.output(21,GPIO.LOW)
@@ -56,6 +27,8 @@ while True:
 	GPIO.output(16,GPIO.LOW)
 	GPIO.output(20,GPIO.LOW)
 	GPIO.output(24,GPIO.LOW)
+
+def say_goodbye_reset():
 	GPIO.output(18,GPIO.HIGH) #white
 	time.sleep(1) 
 	GPIO.output(23,GPIO.HIGH) #blue
@@ -96,3 +69,24 @@ while True:
 	GPIO.output(20,GPIO.HIGH) #red
 	GPIO.output(16,GPIO.HIGH) #green
 	time.sleep(.5)
+
+def say_hello_start():
+    print("Hello! start")
+
+def say_goodbye_start():
+    print("Goodbye! start")
+
+button = Button(0)
+
+button.when_pressed = say_hello_reset
+button.when_released = say_goodbye_reset
+
+button = Button(2)
+
+button.when_pressed = say_hello_start
+button.when_released = say_goodbye_start
+
+
+pause()
+
+
