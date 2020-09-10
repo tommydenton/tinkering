@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from gpiozero import Button
+from signal import pause
 import RPi.GPIO as GPIO
 import time
 
@@ -15,6 +17,23 @@ GPIO.setup(20,GPIO.OUT) #relay 7 red
 GPIO.setup(24,GPIO.OUT) #relay 8 gate
 GPIO.setup(0,GPIO.OUT) #reset button
 GPIO.setup(2,GPIO.OUT) #start button
+
+def say_hello():
+    print("Hello!")
+
+def say_goodbye():
+    print("Goodbye!")
+
+button = Button(0)
+
+button.when_pressed = say_hello
+button.when_released = say_goodbye
+
+pause()
+
+
+
+
 
 while True:
 		GPIO.output(18,GPIO.LOW) 
