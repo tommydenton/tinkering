@@ -69,7 +69,7 @@ try:
 			start_led()
 			time.sleep(0.2) 
 
-		input_state1 = GPIO.input(startbtn)
+		input_state = GPIO.input(startbtn)
         if input_state == False:
 			print('Start Button Pressed')
 			start_led()
