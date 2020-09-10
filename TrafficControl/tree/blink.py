@@ -12,7 +12,9 @@ GPIO.setup(25,GPIO.OUT) #relay 4 yellow2
 GPIO.setup(12,GPIO.OUT) #relay 5 yellow3
 GPIO.setup(16,GPIO.OUT) #relay 6 green
 GPIO.setup(20,GPIO.OUT) #relay 7 red
-GPIO.setup(24,GPIO.OUT) #relay 8 open
+GPIO.setup(24,GPIO.OUT) #relay 8 gate
+GPIO.setup(0,GPIO,OUT) #reset button
+GPIO.setup(2,GPIO,OUT) #start button
 
 while True:
 		GPIO.output(18,GPIO.LOW) 
