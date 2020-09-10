@@ -10,8 +10,8 @@ btmyellow = 12
 green = 16
 red = 20
 gate = 24
-resetbtn = 0
-startbtn = 2
+resetbtn = 5
+startbtn = 6
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
