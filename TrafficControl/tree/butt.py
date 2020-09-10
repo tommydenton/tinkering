@@ -2,6 +2,9 @@
 
 import RPi.GPIO as GPIO
 import time
+import gc
+
+gc.collect()
 
 white = 18
 blue = 23
