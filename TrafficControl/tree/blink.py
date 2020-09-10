@@ -117,14 +117,14 @@ try:
 			print('Reset Button Pressed')
 			reset_led()
 			time.sleep(0.2)
-		prev_input = input     
+		prev_input = input_state     
 
+		prev_input = 0
 		input_state = GPIO.input(startbtn)
 		if ((not prev_input ) and input_state):
 			print('Start Button Pressed')
 			start_led()
 			time.sleep(0.2)
-		prev_input = input
-
+		prev_input = input_state
 except:
 		GPIO.cleanup() 
