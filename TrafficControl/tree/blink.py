@@ -1,6 +1,4 @@
 #!/usr/bin/python
-from gpiozero import Button
-from signal import pause
 import RPi.GPIO as GPIO
 import time
 
@@ -102,15 +100,14 @@ def start_led():
 	def say_goodbye_start():
 		print("Goodbye! start")
 
-	button = Button(0)
-
-	button.when_pressed = say_hello_reset
-	button.when_released = say_goodbye_reset
-
-	button = Button(2)
-
-	button.when_pressed = say_hello_start
-	button.when_released = say_goodbye_start
-
-
-	pause()
+prev_input = 0
+while True:
+  #take a reading
+  input = GPIO.input(17)
+  #if the last reading was low and this one high, print
+  if ((not prev_input) and input):
+    start_led
+  #update previous input
+  prev_input = input
+  #slight pause to debounce
+  time.sleep(0.05)
