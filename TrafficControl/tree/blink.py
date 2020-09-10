@@ -98,7 +98,7 @@ def start_led():
 prev_input = 0
 while True:
   #take a reading
-  input = GPIO.input(0)
+  input = GPIO.input(2)
   #if the last reading was low and this one high, print
   if ((not prev_input) and input):
 	start_led
