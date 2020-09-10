@@ -1,6 +1,10 @@
 #!/usr/bin/python
+
 import RPi.GPIO as GPIO
 import time
+import gc
+
+gc.collect()
 
 white = 18
 blue = 23
@@ -14,7 +18,7 @@ resetbtn = 5
 startbtn = 6
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+#GPIO.setwarnings(False)
 GPIO.setup(white,GPIO.OUT) #relay 1 white
 GPIO.setup(blue,GPIO.OUT) #relay 2 blue
 GPIO.setup(topyellow,GPIO.OUT) #relay 3 yellow1
@@ -106,24 +110,16 @@ def start_led():
 		time.sleep(1)
     		print("button pressed")
 
-prev_input = 0
-while True:
-  #take a reading
-  input = GPIO.input(resetbtn)
-  #if the last reading was low and this one high, print
-  if ((not prev_input) and input):
-	start_led
-  #update previous input
-  prev_input = input
-  #slight pause to debounce
-  time.sleep(0.05)
 
-    #take a reading
-  input = GPIO.input(startbtn)
-  #if the last reading was low and this one high, print
-  if ((not prev_input) and input):
-	start_led
-  #update previous input
-  prev_input = input
-  #slight pause to debounce
-  time.sleep(0.05)
+while True:
+    input_state = GPIO.input(resetbtn)
+    if input_state == False:
+        print('Reset Button Pressed')
+		start_led:
+        time.sleep(0.2)     
+
+    input_state = GPIO.input(startbtn)
+    if input_state == False:
+        print('Start Button Pressed')
+		start_led
+        time.sleep(0.2)  
