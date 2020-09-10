@@ -19,58 +19,58 @@ GPIO.setup(0,GPIO.OUT) #reset button
 GPIO.setup(2,GPIO.OUT) #start button
 
 def say_hello_reset():
-	GPIO.output(18,GPIO.LOW) 
-	GPIO.output(23,GPIO.LOW) 
-	GPIO.output(21,GPIO.LOW)
-	GPIO.output(25,GPIO.LOW)
-	GPIO.output(12,GPIO.LOW)
-	GPIO.output(16,GPIO.LOW)
-	GPIO.output(20,GPIO.LOW)
-	GPIO.output(24,GPIO.LOW)
+	while True:
+		GPIO.output(18,GPIO.LOW) 
+		GPIO.output(23,GPIO.LOW) 
+		GPIO.output(21,GPIO.LOW)
+		GPIO.output(25,GPIO.LOW)
+		GPIO.output(12,GPIO.LOW)
+		GPIO.output(16,GPIO.LOW)
+		GPIO.output(20,GPIO.LOW)
+		GPIO.output(24,GPIO.LOW)
 
 def say_goodbye_reset():
-	GPIO.output(18,GPIO.HIGH) #white
-	time.sleep(1) 
-	GPIO.output(23,GPIO.HIGH) #blue
-	time.sleep(3) 
-	GPIO.output(18,GPIO.LOW) #white
-	GPIO.output(23,GPIO.LOW) #blue
-	GPIO.output(21,GPIO.HIGH) #yellow1
-	time.sleep(.1)
-	GPIO.output(25,GPIO.HIGH) #yellow2
-	time.sleep(.1)
-	GPIO.output(12,GPIO.HIGH) #yellow3
-	time.sleep(.2)
-	GPIO.output(16,GPIO.HIGH) #green
-	GPIO.output(12,GPIO.LOW) #yellow1
-	GPIO.output(25,GPIO.LOW) #yellow2
-	GPIO.output(21,GPIO.LOW) #yellow3
-	time.sleep(5) 
-	GPIO.output(16,GPIO.LOW) #green
-	time.sleep(3) 
-	GPIO.output(20,GPIO.HIGH) #red
-	GPIO.output(16,GPIO.HIGH) #green
-	time.sleep(1) 
-	GPIO.output(20,GPIO.LOW) #red
-	GPIO.output(16,GPIO.LOW) #green
-	time.sleep(.5)
-	GPIO.output(20,GPIO.HIGH) #red
-	GPIO.output(16,GPIO.HIGH) #green
-	time.sleep(.5)
-	GPIO.output(20,GPIO.LOW) #red
-	GPIO.output(16,GPIO.LOW) #green
-	time.sleep(.5)
-	GPIO.output(20,GPIO.HIGH) #red
-	GPIO.output(16,GPIO.HIGH) #green
-	time.sleep(.5)
-	GPIO.output(20,GPIO.LOW) #red
-	GPIO.output(16,GPIO.LOW) #green
-	time.sleep(.5)
-	GPIO.output(20,GPIO.HIGH) #red
-	GPIO.output(16,GPIO.HIGH) #green
-	time.sleep(.5)
-
-while True:
+	while True:
+		GPIO.output(18,GPIO.HIGH) #white
+		time.sleep(1) 
+		GPIO.output(23,GPIO.HIGH) #blue
+		time.sleep(3) 
+		GPIO.output(18,GPIO.LOW) #white
+		GPIO.output(23,GPIO.LOW) #blue
+		GPIO.output(21,GPIO.HIGH) #yellow1
+		time.sleep(.1)
+		GPIO.output(25,GPIO.HIGH) #yellow2
+		time.sleep(.1)
+		GPIO.output(12,GPIO.HIGH) #yellow3
+		time.sleep(.2)
+		GPIO.output(16,GPIO.HIGH) #green
+		GPIO.output(12,GPIO.LOW) #yellow1
+		GPIO.output(25,GPIO.LOW) #yellow2
+		GPIO.output(21,GPIO.LOW) #yellow3
+		time.sleep(5) 
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(3) 
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(1) 
+		GPIO.output(20,GPIO.LOW) #red
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.LOW) #red
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.LOW) #red
+		GPIO.output(16,GPIO.LOW) #green
+		time.sleep(.5)
+		GPIO.output(20,GPIO.HIGH) #red
+		GPIO.output(16,GPIO.HIGH) #green
+		time.sleep(.5)
 
 	def say_hello_start():
 		print("Hello! start")
