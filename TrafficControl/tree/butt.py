@@ -3,34 +3,36 @@
 import RPi.GPIO as GPIO
 import time
 
+white = 18
+blue = 23
+topyellow = 21
+midyellow = 25
+btmyellow = 12
+green = 16
+red = 20
+gate = 24
+resetbtn = 5
+startbtn = 6
+
 GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(18,GPIO.OUT) #relay 1 white
-GPIO.setup(23,GPIO.OUT) #relay 2 blue
-GPIO.setup(21,GPIO.OUT) #relay 3 yellow1
-GPIO.setup(25,GPIO.OUT) #relay 4 yellow2
-GPIO.setup(12,GPIO.OUT) #relay 5 yellow3
-GPIO.setup(16,GPIO.OUT) #relay 6 green
-GPIO.setup(20,GPIO.OUT) #relay 7 red
-GPIO.setup(24,GPIO.OUT) #relay 8 gate
-GPIO.setup(0,GPIO.OUT) #reset button
-GPIO.setup(2,GPIO.OUT) #start button
+GPIO.setup(white, GPIO.OUT) #relay 1 white
+GPIO.setup(blue, GPIO.OUT) #relay 2 blue
+GPIO.setup(topyellow, GPIO.OUT) #relay 3 yellow1
+GPIO.setup(midyellow, GPIO.OUT) #relay 4 yellow2
+GPIO.setup(btmyellow, GPIO.OUT) #relay 5 yellow3
+GPIO.setup(green, GPIO.OUT) #relay 6 green
+GPIO.setup(red, GPIO.OUT) #relay 7 red
+GPIO.setup(gate, GPIO.OUT) #relay 8 gate
+GPIO.setup(resetbtn, GPIO.IN, pull_up_down=GPIO.PUD_UP) #reset button
+GPIO.setup(startbtn, GPIO.IN, pull_up_down=GPIO.PUD_UP) #start button
 
 while True:
+    input_state = GPIO.input(resetbtn)
+    if input_state == False:
+        print('Reset Button Pressed')
+        time.sleep(0.2)     
 
-    # Turn LED off
-    print ("LED off")
-    GPIO.output(27, GPIO.LOW)
-    
-    # waiting for button press
-    while GPIO.input(21) == 1:
-        time.sleep(0.2) 
-        
-    # Turn LED on
-    print ("LED on")
-    GPIO.output(27, GPIO.HIGH)
-
-
-    # waiting for button release
-    while GPIO.input(21) == 0:
-        time.sleep(0.2)         
+    input_state = GPIO.input(startbtn)
+    if input_state == False:
+        print('Start Button Pressed')
+        time.sleep(0.2)     
