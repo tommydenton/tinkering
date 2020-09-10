@@ -3,27 +3,37 @@
 import RPi.GPIO as GPIO
 import time
 
+white = 18
+blue = 23
+topyellow = 21
+midyellow = 25
+btmyellow = 12
+green = 16
+red = 20
+gate = 24
+resetbtn = 5
+startbtn = 6
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(18,GPIO.OUT) #relay 1 white
-GPIO.setup(23,GPIO.OUT) #relay 2 blue
-GPIO.setup(21,GPIO.OUT) #relay 3 yellow1
-GPIO.setup(25,GPIO.OUT) #relay 4 yellow2
-GPIO.setup(12,GPIO.OUT) #relay 5 yellow3
-GPIO.setup(16,GPIO.OUT) #relay 6 green
-GPIO.setup(20,GPIO.OUT) #relay 7 red
-GPIO.setup(24,GPIO.OUT) #relay 8 gate
-GPIO.setup(0,GPIO.OUT) #reset button
-GPIO.setup(2,GPIO.OUT) #start button
+GPIO.setup(white,GPIO.OUT) #relay 1 white
+GPIO.setup(blue,GPIO.OUT) #relay 2 blue
+GPIO.setup(topyellow,GPIO.OUT) #relay 3 yellow1
+GPIO.setup(midyellow,GPIO.OUT) #relay 4 yellow2
+GPIO.setup(btmyellow,GPIO.OUT) #relay 5 yellow3
+GPIO.setup(green,GPIO.OUT) #relay 6 green
+GPIO.setup(red,GPIO.OUT) #relay 7 red
+GPIO.setup(gate,GPIO.OUT) #relay 8 gate
+GPIO.setup(resetbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #reset button
+GPIO.setup(startbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #start button
 
 while True:
-	GPIO.output(18,GPIO.LOW) 
-	GPIO.output(23,GPIO.LOW) 
-	GPIO.output(24,GPIO.LOW) 
-	GPIO.output(25,GPIO.LOW) 
-	GPIO.output(12,GPIO.LOW) 
-	GPIO.output(16,GPIO.LOW) 
-	GPIO.output(20,GPIO.LOW) 
-	GPIO.output(21,GPIO.LOW)
-	time.sleep(5)
+	GPIO.output(white,GPIO.LOW) 
+	GPIO.output(blue,GPIO.LOW) 
+	GPIO.output(topyellow,GPIO.LOW)
+	GPIO.output(midyellow,GPIO.LOW)
+	GPIO.output(btmyellow,GPIO.LOW)
+	GPIO.output(green,GPIO.LOW)
+	GPIO.output(red,GPIO.LOW)
+	GPIO.output(gate,GPIO.LOW)
  
