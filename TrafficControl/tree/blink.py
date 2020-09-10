@@ -24,7 +24,7 @@ GPIO.setup(green,GPIO.OUT) #relay 6 green
 GPIO.setup(red,GPIO.OUT) #relay 7 red
 GPIO.setup(gate,GPIO.OUT) #relay 8 gate
 GPIO.setup(resetbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #reset button
-GPIO.setup(startbtn,GPIO.INpull_up_down=GPIO.PUD_UP) #start button
+GPIO.setup(startbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #start button
 
 def reset_led():
 	GPIO.output(white,GPIO.LOW) 
