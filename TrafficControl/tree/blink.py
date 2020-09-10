@@ -18,7 +18,7 @@ resetbtn = 5
 startbtn = 6
 
 GPIO.setmode(GPIO.BCM)
-#GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 GPIO.setup(white,GPIO.OUT) #relay 1 white
 GPIO.setup(blue,GPIO.OUT) #relay 2 blue
 GPIO.setup(topyellow,GPIO.OUT) #relay 3 yellow1
@@ -109,16 +109,22 @@ def start_led():
 		GPIO.output(green,GPIO.LOW) #green
 		time.sleep(1)
 
-while True:
-    input_state = GPIO.input(resetbtn)
-    if input_state == False:
-        print('Reset Button Pressed')
- 		GPIO.output(white,GPIO.HIGH) #white
-		start_led
-        time.sleep(0.2)     
+try:
+	while True:
+		input_state = GPIO.input(resetbtn)
+		if input_state == False:
+			print('Reset Button Pressed')
+			start_led()
+			time.sleep(0.2)
+		else:
+			print('start else')     
 
-    input_state = GPIO.input(startbtn)
-    if input_state == False:
-        print('Start Button Pressed')
-		start_led
-        time.sleep(0.2)  
+		input_state = GPIO.input(startbtn)
+		if input_state == False:
+			print('Start Button Pressed')
+			start_led()
+			time.sleep(0.2)
+		else:
+			print('start else')
+except:
+		GPIO.cleanup() 

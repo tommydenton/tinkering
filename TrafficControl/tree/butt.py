@@ -30,13 +30,20 @@ GPIO.setup(gate,GPIO.OUT) #relay 8 gate
 GPIO.setup(resetbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #reset button
 GPIO.setup(startbtn,GPIO.IN,pull_up_down=GPIO.PUD_UP) #start button
 
-while True:
-    input_state = GPIO.input(resetbtn)
-    if input_state == False:
-        print('Reset Button Pressed')
-        time.sleep(0.2)     
+try:
+    while True:
+        input_state = GPIO.input(resetbtn)
+        if input_state == False:
+            print('Reset Button Pressed')
+            time.sleep(0.2)
+        else:
+            print('reset else')
 
-    input_state = GPIO.input(startbtn)
-    if input_state == False:
-        print('Start Button Pressed')
-        time.sleep(0.2)     
+        input_state = GPIO.input(startbtn)
+        if input_state == False:
+            print('Start Button Pressed')
+            time.sleep(0.2)
+        else:
+            print('start else')
+except:
+    GPIO.cleanup()
