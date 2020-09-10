@@ -64,11 +64,10 @@ def start_led():
 try:
 	while True:
 		input_state = GPIO.input(resetbtn)
-       		 if input_state == False:
+       		if input_state == False:
 			print('Reset Button Pressed')
 			start_led()
 			time.sleep(0.2)
-
 		input_state = GPIO.input(startbtn)
         	if input_state == False:
 			print('Start Button Pressed')
