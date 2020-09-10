@@ -93,6 +93,7 @@ def start_led():
 		GPIO.output(20,GPIO.LOW) #red
 		GPIO.output(16,GPIO.LOW) #green
 		time.sleep(1)
+    		print("button pressed")
 
 prev_input = 0
 while True:
@@ -100,7 +101,6 @@ while True:
   input = GPIO.input(0)
   #if the last reading was low and this one high, print
   if ((not prev_input) and input):
-    print("button pressed")
 	start_led
   #update previous input
   prev_input = input
