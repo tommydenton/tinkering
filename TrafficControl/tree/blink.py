@@ -44,15 +44,15 @@ def start_led():
 	GPIO.output(white,GPIO.HIGH) #white
 	time.sleep(1) 
 	GPIO.output(blue,GPIO.HIGH) #blue
-	time.sleep(3) 
+	time.sleep(1.5) 
 	GPIO.output(white,GPIO.LOW) #white
 	GPIO.output(blue,GPIO.LOW) #blue
 	GPIO.output(topyellow,GPIO.HIGH) #yellow1
-	time.sleep(.1)
+	time.sleep(1)
 	GPIO.output(midyellow,GPIO.HIGH) #yellow2
-	time.sleep(.1)
+	time.sleep(1)
 	GPIO.output(btmyellow,GPIO.HIGH) #yellow3
-	time.sleep(.2)
+	time.sleep(1)
 	GPIO.output(green,GPIO.HIGH) #green
 	GPIO.output(btmyellow,GPIO.LOW) #yellow1
 	GPIO.output(midyellow,GPIO.LOW) #yellow2
@@ -112,6 +112,7 @@ def start_led():
 try:
 	while True:
 		prev_input = 0
+		input_state = False
 		input_state = GPIO.input(resetbtn)
 		if ((not prev_input ) and input_state):
 			print('Reset Button Pressed')
@@ -119,12 +120,13 @@ try:
 			time.sleep(0.2)
 		prev_input = input_state     
 
-		prev_input = 0
-		input_state = GPIO.input(startbtn)
-		if ((not prev_input ) and input_state):
+		prev_input1 = 0
+		input_state1 = False
+		input_state1 = GPIO.input(startbtn)
+		if ((not prev_input1 ) and input_state1):
 			print('Start Button Pressed')
 			start_led()
 			time.sleep(0.2)
-		prev_input = input_state
+		prev_input1 = input_state1
 except:
 		GPIO.cleanup() 
