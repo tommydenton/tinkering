@@ -77,6 +77,14 @@ def start_led():
 	GPIO.output(topyellow,GPIO.LOW)
 	GPIO.output(midyellow,GPIO.LOW)
 	GPIO.output(btmyellow,GPIO.LOW)
+	time.sleep(3)
+	GPIO.output(red,GPIO.HIGH)
+	GPIO.output(topyellow,GPIO.HIGH)
+	GPIO.output(midyellow,GPIO.HIGH)
+	GPIO.output(btmyellow,GPIO.HIGH)
+	GPIO.output(blue,GPIO.HIGH) 
+	GPIO.output(white,GPIO.HIGH) 
+
 
 while True:
 	input_state = GPIO.input(resetbtn)
