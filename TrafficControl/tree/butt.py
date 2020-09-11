@@ -2,9 +2,6 @@
 
 import RPi.GPIO as GPIO
 import time
-import gc
-
-gc.collect()
 
 white = 18
 blue = 23
@@ -14,11 +11,11 @@ btmyellow = 12
 green = 16
 red = 20
 gate = 24
-resetbtn = 5
-startbtn = 6
+resetbtn = 6
+startbtn = 5
 
 GPIO.setmode(GPIO.BCM)
-#GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 GPIO.setup(white,GPIO.OUT) #relay 1 white
 GPIO.setup(blue,GPIO.OUT) #relay 2 blue
 GPIO.setup(topyellow,GPIO.OUT) #relay 3 yellow1
