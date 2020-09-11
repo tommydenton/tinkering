@@ -5,12 +5,12 @@ import time
 
 white = 18
 blue = 23
-topyellow = 21
+topyellow = 24
 midyellow = 25
 btmyellow = 12
 green = 16
 red = 20
-gate = 24
+gate = 21
 resetbtn = 6
 startbtn = 5
 
