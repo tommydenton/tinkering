@@ -73,7 +73,8 @@ while True:
 		print('Reset Button Pressed')
 		reset_led()
 		time.sleep(0.3)
-	else if input_stateb == False:
-		print('Start Button Pressed')
-		start_led()
-		time.sleep(0.3)
+	else:
+		if input_stateb == False:
+			print('Start Button Pressed')
+			start_led()
+			time.sleep(0.3)
