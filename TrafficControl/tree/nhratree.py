@@ -77,7 +77,6 @@ def start_led():
 	GPIO.output(topyellow,GPIO.LOW)
 	GPIO.output(midyellow,GPIO.LOW)
 	GPIO.output(btmyellow,GPIO.LOW)
-<<<<<<< HEAD
 	time.sleep(3)
 	GPIO.output(red,GPIO.HIGH)
 	GPIO.output(topyellow,GPIO.HIGH)
@@ -85,7 +84,6 @@ def start_led():
 	GPIO.output(btmyellow,GPIO.HIGH)
 	GPIO.output(blue,GPIO.HIGH) 
 	GPIO.output(white,GPIO.HIGH) 
-=======
 	time.sleep(4)
 	GPIO.output(red,GPIO.HIGH)
 	GPIO.output(white,GPIO.HIGH) 
@@ -94,7 +92,6 @@ def start_led():
 	GPIO.output(midyellow,GPIO.HIGH)
 	GPIO.output(btmyellow,GPIO.HIGH)
 	GPIO.output(green,GPIO.HIGH)
->>>>>>> effcd97bb4535a8aef4c1195e4c993a549363c42
 
 
 while True:
