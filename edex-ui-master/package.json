@@ -108,7 +108,7 @@
   "dependencies": {
     "clean-css": "4.2.3",
     "cson-parser": "4.0.7",
-    "electron": "^10.2.0",
+    "electron": "^13.6.6",
     "electron-builder": "^22.10.3",
     "electron-rebuild": "^2.3.4",
     "mime-types": "^2.1.27",
