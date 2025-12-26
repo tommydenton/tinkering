@@ -2,6 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Apollo Weather Display - Inky pHAT (250x122)
+BLACK background, YELLOW (#ffff00) text and accents
+Authentic Apollo DSKY / Mission Control style
+
+To install NASA font on your Pi:
+1. Download Nasalization font from: https://www.fontget.com/font/nasalization/
+2. sudo cp *.ttf /usr/share/fonts/truetype/
+3. sudo fc-cache -f -v
 """
 
 import glob
@@ -74,7 +81,28 @@ def get_weather(address):
     return weather
 
 
-# Icon and mask storage
+def load_font(size):
+    """Try to load NASA-style font, fall back to system fonts."""
+    font_paths = [
+        "/usr/share/fonts/truetype/nasalization.ttf",
+        "/usr/share/fonts/truetype/Nasalization-rg.ttf",
+        "/usr/share/fonts/truetype/nasa/Nasalization-rg.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    ]
+    
+    for font_path in font_paths:
+        if os.path.exists(font_path):
+            try:
+                return ImageFont.truetype(font_path, size)
+            except:
+                continue
+    
+    return ImageFont.load_default()
+
+
+# Storage for icons
 icons = {}
 masks = {}
 
@@ -114,16 +142,16 @@ if weather:
 else:
     print("WARNING: No weather data!")
 
-# Load backdrop
+# Load backdrop (black background)
 img = Image.open(os.path.join(PATH, "resources/backdrop_apollo.png")).resize(inky_display.resolution)
 img = img.convert('RGBA')
 
-TEXT_COLOR = (255, 255, 255)
-YELLOW_COLOR = (255, 255, 0)
+# YELLOW for everything - authentic Apollo style
+YELLOW = (255, 255, 0)  # #ffff00
 
 draw = ImageDraw.Draw(img)
 
-# Load icons
+# Load yellow icons
 for icon_file in glob.glob(os.path.join(PATH, "resources/icon-*-apollo.png")):
     icon_name = icon_file.split("icon-")[1].replace("-apollo.png", "")
     icon_image = Image.open(icon_file).convert('RGBA')
@@ -136,59 +164,61 @@ for icon_file in glob.glob(os.path.join(PATH, "resources/icon-*-apollo.png")):
                 mask_image.putpixel((x, y), 255)
     masks[icon_name] = mask_image
 
-# Fonts - small for this tiny screen!
-try:
-    from font_fredoka_one import FredokaOne
-    font_sm = ImageFont.truetype(FredokaOne, 12)
-    font_med = ImageFont.truetype(FredokaOne, 14)
-except:
-    font_sm = ImageFont.load_default()
-    font_med = ImageFont.load_default()
+# Load fonts
+font_sm = load_font(12)
+font_med = load_font(14)
 
 # Header: date/time
 date_str = time.strftime("%m/%d %H:%M")
-draw.text((20, 4), date_str, YELLOW_COLOR, font=font_med)
+draw.text((22, 4), date_str, YELLOW, font=font_med)
 
 # Weather icon (left box area)
 if weather_icon and weather_icon in icons:
     img.paste(icons[weather_icon], (11, 50), masks[weather_icon])
 
-# Data area (right of divider, x starts at ~48)
-# Line 1: Temp and Humidity
-draw.text((48, 24), f"{int(temperature_f)}°F", TEXT_COLOR, font=font_med)
-draw.text((100, 24), f"RH:{int(humidity)}%", TEXT_COLOR, font=font_med)
+# Data area - 5 rows, all YELLOW text
+data_x = 50
 
-# Line 2: Wind
+# Row 1 (y=24-42): Temperature
+draw.text((data_x, 25), f"TEMP: {int(temperature_f)}F", YELLOW, font=font_med)
+
+# Row 2 (y=44-62): Humidity
+draw.text((data_x, 45), f"RH: {int(humidity)}%", YELLOW, font=font_med)
+
+# Row 3 (y=64-82): Wind
 windspeed_mph = windspeed * 0.621371
 wind_compass = degrees_to_compass(wind_direction)
-draw.text((48, 45), f"W:{int(windspeed_mph)}mph {wind_compass}", TEXT_COLOR, font=font_sm)
+draw.text((data_x, 65), f"WIND: {int(windspeed_mph)} MPH {wind_compass}", YELLOW, font=font_sm)
 
-# Line 3: Feels like
-draw.text((48, 65), f"Feels:{int(feels_like_f)}°F", TEXT_COLOR, font=font_sm)
+# Row 4 (y=84-102): Feels like
+draw.text((data_x, 85), f"FEELS: {int(feels_like_f)}F", YELLOW, font=font_med)
 
-# Line 4: Location (small)
-draw.text((48, 85), f"{CITY.upper()}", YELLOW_COLOR, font=font_sm)
+# Row 5 (y=104-120): Location
+draw.text((data_x, 105), f"LOC: {CITY.upper()}", YELLOW, font=font_sm)
 
-# Convert to palette for Inky
+# Convert to palette for Inky display
+# Index 0=Black, Index 1=White, Index 2=Yellow
 pal_img = Image.new("P", img.size)
 palette = [0] * 768
-palette[0:3] = [0, 0, 0]
-palette[3:6] = [255, 255, 255]
-palette[6:9] = [255, 255, 0]
+palette[0:3] = [0, 0, 0]        # Index 0: Black
+palette[3:6] = [255, 255, 255]  # Index 1: White (unused but needed)
+palette[6:9] = [255, 255, 0]    # Index 2: Yellow (#ffff00)
 pal_img.putpalette(palette)
 
 pixels_rgba = img.load()
 pixels_pal = pal_img.load()
+
 for y in range(img.height):
     for x in range(img.width):
         r, g, b, a = pixels_rgba[x, y]
-        if r > 200 and g > 200 and b < 100:
+        
+        # Yellow: high R, high G, low B
+        if r > 150 and g > 150 and b < 100:
             pixels_pal[x, y] = 2  # Yellow
-        elif r > 128 or g > 128 or b > 128:
-            pixels_pal[x, y] = 1  # White
+        # Everything else is black background
         else:
             pixels_pal[x, y] = 0  # Black
 
 inky_display.set_image(pal_img)
 inky_display.show()
-print("Display updated.")
+print("Display updated - BLACK bg, YELLOW text")
