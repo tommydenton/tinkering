@@ -21,15 +21,15 @@ import rda5807m
 
 # Fort Worth area FM stations (frequency in 10kHz units)
 PRESETS = [
-    (8890, "KCBI 89.9"),
-    (9070, "KERA 90.7"),
-    (9710, "KLTY 97.1"),
-    (9750, "KESN 97.5"),
-    (9810, "KFWR 98.1"),
-    (10030, "KTXQ 100.3"),
-    (10110, "KVIL 101.1"),
-    (10290, "KDGE 102.9"),
-    (10650, "KLUV 106.5"),
+    (8870, "KTCU 88.7"),      # TCU College Radio
+    (9010, "KERA 90.1"),      # NPR
+    (9170, "KKXT 91.7"),      # Indie/AAA
+    (9250, "KZPS 92.5"),      # Lone Star Classic Rock
+    (9710, "KEGL 97.1"),      # The Eagle Rock
+    (9870, "KLUV 98.7"),      # Classic Hits 60s/70s/80s
+    (10030, "KJKK 100.3"),    # Jack FM
+    (10210, "KDGE 102.1"),    # Star 102.1 AC
+    (10610, "KHKS 106.1"),    # KISS FM Top 40
 ]
 
 
