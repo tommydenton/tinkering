@@ -65,6 +65,11 @@ class SensorStation:
         self.num_pages = 4
         self.backlight_on = True
         self.last_button_time = 0
+        
+        # Activity indicator
+        self.spin_chars = ['◐', '◓', '◑', '◒']
+        self.spin_idx = 0
+        self.loop_count = 0
 
         # Sensor data cache
         self.sensor_data = {
@@ -466,6 +471,12 @@ class SensorStation:
             self.draw_page_gps()
         elif self.current_page == 3:
             self.draw_page_system()
+
+        # Activity indicator (spinner + loop count)
+        self.spin_idx = (self.spin_idx + 1) % len(self.spin_chars)
+        self.loop_count += 1
+        spinner = self.spin_chars[self.spin_idx]
+        self.draw.text((5, self.height - 15), f"{spinner} {self.loop_count}", font=self.font_small, fill=self.GRAY)
 
         # Push to display
         self.display.image(self.image)
