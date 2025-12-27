@@ -118,7 +118,7 @@ class FMRadioUI:
             return
             
         # Clear header area
-        for i in range(11):
+        for i in range(12):
             self.stdscr.move(i, 0)
             self.stdscr.clrtoeol()
             
@@ -203,16 +203,18 @@ class FMRadioUI:
             
         # Menu separator and commands
         self.stdscr.addstr(7, 0, "─" * (width-1))
-        menu1 = " +/- Vol  >/< Preset  u/d Seek  1-9 Jump"
-        menu2 = " m Mute   b Bass      s Stereo  p List  q Quit"
+        menu1 = " +/- Vol   >/< Preset   u/d Seek   1-9 Jump"
+        menu2 = " m Mute    b Bass       s Stereo   r RDS"
+        menu3 = " p List    q Quit"
         self.stdscr.addstr(8, 1, menu1[:width-2])
         self.stdscr.addstr(9, 1, menu2[:width-2])
-        self.stdscr.addstr(10, 0, "─" * (width-1))
+        self.stdscr.addstr(10, 1, menu3[:width-2])
+        self.stdscr.addstr(11, 0, "─" * (width-1))
         
     def draw_log(self):
         """Draw scrolling log area"""
         height, width = self.stdscr.getmaxyx()
-        log_start = 11
+        log_start = 12
         log_height = height - log_start - 1
         
         if log_height <= 0:
