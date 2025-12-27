@@ -65,11 +65,16 @@ class SensorStation:
         self.num_pages = 4
         self.backlight_on = True
         self.last_button_time = 0
+        self.last_page_change = time.monotonic()
+        self.page_interval = 15.0  # Auto-rotate every 15 seconds
         
-        # Activity indicator
-        self.spin_chars = ['◐', '◓', '◑', '◒']
-        self.spin_idx = 0
-        self.loop_count = 0
+        # Network info overlay
+        self.show_network = False
+        self.network_info = {
+            'ssid': None,
+            'ip': None,
+            'ping_ms': None,
+        }
 
         # Sensor data cache
         self.sensor_data = {
@@ -262,20 +267,88 @@ class SensorStation:
         """Check button states and handle actions."""
         current_time = time.monotonic()
 
-        # Debounce - 200ms
-        if current_time - self.last_button_time < 0.2:
+        # Debounce - 300ms
+        if current_time - self.last_button_time < 0.3:
             return
 
-        # Button A - cycle pages
+        # Button A - toggle backlight
         if not self.button_a.value:
-            self.current_page = (self.current_page + 1) % self.num_pages
-            self.last_button_time = current_time
-
-        # Button B - toggle backlight
-        if not self.button_b.value:
             self.backlight_on = not self.backlight_on
             self.backlight.value = self.backlight_on
             self.last_button_time = current_time
+
+        # Button B - toggle network info with ping
+        if not self.button_b.value:
+            if self.show_network:
+                self.show_network = False
+            else:
+                self.show_network = True
+                self.update_network_info()
+            self.last_button_time = current_time
+
+    def update_network_info(self):
+        """Get network info and ping 1.1.1.1"""
+        import subprocess
+        
+        # Get SSID
+        try:
+            result = subprocess.run(['iwgetid', '-r'], capture_output=True, text=True, timeout=5)
+            self.network_info['ssid'] = result.stdout.strip() or "Not connected"
+        except Exception:
+            self.network_info['ssid'] = "Unknown"
+        
+        # Get IP address
+        try:
+            result = subprocess.run(['hostname', '-I'], capture_output=True, text=True, timeout=5)
+            ips = result.stdout.strip().split()
+            self.network_info['ip'] = ips[0] if ips else "No IP"
+        except Exception:
+            self.network_info['ip'] = "Unknown"
+        
+        # Ping 1.1.1.1
+        try:
+            result = subprocess.run(
+                ['ping', '-c', '1', '-W', '2', '1.1.1.1'],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode == 0:
+                # Parse ping time from output
+                for line in result.stdout.split('\n'):
+                    if 'time=' in line:
+                        ping_time = line.split('time=')[1].split()[0]
+                        self.network_info['ping_ms'] = ping_time
+                        break
+            else:
+                self.network_info['ping_ms'] = "FAIL"
+        except Exception:
+            self.network_info['ping_ms'] = "ERROR"
+
+    def draw_network_overlay(self):
+        """Draw network info overlay."""
+        # Semi-transparent background effect - just use solid dark
+        self.draw.rectangle((10, 25, self.width - 10, self.height - 10), fill=(20, 20, 40), outline=self.CYAN)
+        
+        y = 35
+        self.draw.text((20, y), "NETWORK INFO", font=self.font_medium, fill=self.CYAN)
+        y += 25
+        
+        self.draw.text((20, y), f"SSID: {self.network_info['ssid']}", font=self.font_small, fill=self.WHITE)
+        y += 18
+        
+        self.draw.text((20, y), f"IP: {self.network_info['ip']}", font=self.font_small, fill=self.WHITE)
+        y += 18
+        
+        ping = self.network_info['ping_ms']
+        if ping and ping not in ('FAIL', 'ERROR'):
+            color = self.GREEN
+            ping_text = f"Ping: {ping}"
+        else:
+            color = self.RED
+            ping_text = f"Ping: {ping}"
+        self.draw.text((20, y), ping_text, font=self.font_small, fill=color)
+        y += 22
+        
+        self.draw.text((20, y), "[Press B to close]", font=self.font_small, fill=self.GRAY)
 
     def draw_page_environmental(self):
         """Draw environmental data page (temp, humidity, pressure)."""
@@ -428,19 +501,41 @@ class SensorStation:
         self.draw.rectangle((0, 0, self.width, 20), fill=self.CYAN)
         self.draw.text((5, 2), "SYSTEM INFO", font=self.font_small, fill=self.BLACK)
 
-        y = 28
+        y = 25
 
         # RTC Time
         if self.sensor_data['datetime']:
             dt = self.sensor_data['datetime']
-            time_str = f"{dt.tm_hour:02d}:{dt.tm_min:02d}:{dt.tm_sec:02d}"
-            date_str = f"{dt.tm_year}-{dt.tm_mon:02d}-{dt.tm_mday:02d}"
-            self.draw.text((5, y), time_str, font=self.font_large, fill=self.WHITE)
-            y += 30
-            self.draw.text((5, y), date_str, font=self.font_medium, fill=self.GRAY)
+            rtc_time = f"{dt.tm_hour:02d}:{dt.tm_min:02d}:{dt.tm_sec:02d}"
+            rtc_date = f"{dt.tm_year}-{dt.tm_mon:02d}-{dt.tm_mday:02d}"
+            self.draw.text((5, y), f"RTC:  {rtc_time}", font=self.font_medium, fill=self.WHITE)
         else:
-            self.draw.text((5, y), "RTC: --", font=self.font_medium, fill=self.GRAY)
-        y += 25
+            self.draw.text((5, y), "RTC:  --:--:--", font=self.font_medium, fill=self.GRAY)
+        y += 20
+
+        # RPi System Time
+        import time as systime
+        now = systime.localtime()
+        sys_time = f"{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d}"
+        self.draw.text((5, y), f"RPi:  {sys_time}", font=self.font_medium, fill=self.CYAN)
+        y += 20
+
+        # Show drift if both available
+        if self.sensor_data['datetime']:
+            dt = self.sensor_data['datetime']
+            rtc_secs = dt.tm_hour * 3600 + dt.tm_min * 60 + dt.tm_sec
+            sys_secs = now.tm_hour * 3600 + now.tm_min * 60 + now.tm_sec
+            drift = sys_secs - rtc_secs
+            if abs(drift) < 2:
+                self.draw.text((5, y), f"Drift: {drift:+d}s (synced)", font=self.font_small, fill=self.GREEN)
+            else:
+                self.draw.text((5, y), f"Drift: {drift:+d}s", font=self.font_small, fill=self.YELLOW)
+        y += 18
+
+        # Date
+        if self.sensor_data['datetime']:
+            self.draw.text((5, y), f"Date: {rtc_date}", font=self.font_small, fill=self.GRAY)
+        y += 18
 
         # Sensor status
         sensors = [
@@ -472,11 +567,9 @@ class SensorStation:
         elif self.current_page == 3:
             self.draw_page_system()
 
-        # Activity indicator (spinner + loop count)
-        self.spin_idx = (self.spin_idx + 1) % len(self.spin_chars)
-        self.loop_count += 1
-        spinner = self.spin_chars[self.spin_idx]
-        self.draw.text((5, self.height - 15), f"{spinner} {self.loop_count}", font=self.font_small, fill=self.GRAY)
+        # Draw network overlay on top if active
+        if self.show_network:
+            self.draw_network_overlay()
 
         # Push to display
         self.display.image(self.image)
@@ -485,7 +578,8 @@ class SensorStation:
         """Main loop."""
         print("\n" + "="*50)
         print("Sensor Station Running")
-        print("Button A: Change page | Button B: Toggle backlight")
+        print("Button A: Toggle display | Button B: Network info")
+        print("Pages auto-rotate every 15 seconds")
         print("="*50 + "\n")
 
         last_sensor_read = 0
@@ -497,6 +591,11 @@ class SensorStation:
 
                 # Check buttons
                 self.check_buttons()
+
+                # Auto-rotate pages every 15 seconds (unless network overlay is showing)
+                if not self.show_network and current_time - self.last_page_change >= self.page_interval:
+                    self.current_page = (self.current_page + 1) % self.num_pages
+                    self.last_page_change = current_time
 
                 # Read sensors periodically
                 if current_time - last_sensor_read >= sensor_interval:
