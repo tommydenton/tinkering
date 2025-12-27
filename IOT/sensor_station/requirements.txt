@@ -1,0 +1,19 @@
+# Sensor Station Requirements
+# Install with: pip install -r requirements.txt
+
+# Core Blinka library for CircuitPython on Linux
+adafruit-blinka
+
+# Display libraries
+adafruit-circuitpython-rgb-display
+adafruit-circuitpython-st7789
+
+# Sensor libraries
+adafruit-circuitpython-ds3231      # DS3231 RTC
+adafruit-circuitpython-ahtx0       # AHT20 Temperature/Humidity
+adafruit-circuitpython-bmp280      # BMP280 Pressure/Altitude
+adafruit-circuitpython-scd4x       # SCD-41 CO2 Sensor
+adafruit-circuitpython-gps         # PA1010D GPS
+
+# PIL for display graphics (usually available via system packages)
+# pillow
