@@ -250,47 +250,59 @@ def test_display():
 
     try:
         import digitalio
-        import adafruit_st7789
+        # Use RGB Display library (PIL-compatible), NOT adafruit_st7789
+        from adafruit_rgb_display import st7789
         from PIL import Image, ImageDraw, ImageFont
 
         spi = board.SPI()
         cs_pin = digitalio.DigitalInOut(board.CE0)
         dc_pin = digitalio.DigitalInOut(board.D25)
         reset_pin = digitalio.DigitalInOut(board.D27)
+        
         backlight = digitalio.DigitalInOut(board.D22)
-        backlight.direction = digitalio.Direction.OUTPUT
+        backlight.switch_to_output()
         backlight.value = True
 
-        display = adafruit_st7789.ST7789(
+        # Create display using adafruit_rgb_display.st7789
+        display = st7789.ST7789(
             spi,
-            rotation=270,
-            width=240,
-            height=135,
-            x_offset=53,
-            y_offset=40,
             cs=cs_pin,
             dc=dc_pin,
             rst=reset_pin,
             baudrate=64000000,
+            width=135,
+            height=240,
+            x_offset=53,
+            y_offset=40,
+            rotation=270,
         )
 
+        # For rotated display, swap dimensions
+        if display.rotation % 180 == 90:
+            width = display.height
+            height = display.width
+        else:
+            width = display.width
+            height = display.height
+
         # Create test image
-        image = Image.new("RGB", (display.width, display.height))
+        image = Image.new("RGB", (width, height))
         draw = ImageDraw.Draw(image)
 
-        # Draw test pattern
-        draw.rectangle((0, 0, 240, 135), fill=(0, 0, 0))
-        draw.rectangle((0, 0, 240, 30), fill=(255, 0, 0))      # Red
-        draw.rectangle((0, 30, 240, 60), fill=(0, 255, 0))     # Green
-        draw.rectangle((0, 60, 240, 90), fill=(0, 0, 255))     # Blue
-        draw.rectangle((0, 90, 240, 120), fill=(255, 255, 0))  # Yellow
+        # Draw test pattern - horizontal color bars
+        bar_height = height // 5
+        draw.rectangle((0, 0, width, bar_height), fill=(255, 0, 0))           # Red
+        draw.rectangle((0, bar_height, width, bar_height*2), fill=(0, 255, 0))     # Green
+        draw.rectangle((0, bar_height*2, width, bar_height*3), fill=(0, 0, 255))   # Blue
+        draw.rectangle((0, bar_height*3, width, bar_height*4), fill=(255, 255, 0)) # Yellow
+        draw.rectangle((0, bar_height*4, width, height), fill=(0, 0, 0))           # Black
 
         try:
             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
         except:
             font = ImageFont.load_default()
 
-        draw.text((70, 115), "DISPLAY OK!", font=font, fill=(255, 255, 255))
+        draw.text((width//2 - 50, height - 20), "DISPLAY OK!", font=font, fill=(255, 255, 255))
 
         display.image(image)
 
@@ -302,6 +314,8 @@ def test_display():
 
     except Exception as e:
         print(f"✗ Display failed: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 

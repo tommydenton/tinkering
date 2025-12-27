@@ -11,6 +11,8 @@ Sensors:
 - PA1010D GPS (0x10)
 
 Display: Adafruit Mini PiTFT 135x240 (ST7789)
+
+Uses adafruit_rgb_display (PIL-based) NOT adafruit_st7789 (displayio-based)
 """
 
 import time
@@ -19,8 +21,8 @@ import busio
 import digitalio
 from PIL import Image, ImageDraw, ImageFont
 
-# Display
-import adafruit_st7789
+# Display - use RGB Display library (PIL-compatible)
+from adafruit_rgb_display import st7789
 
 # Sensors
 import adafruit_ds3231
@@ -33,7 +35,7 @@ import adafruit_gps
 class SensorStation:
     """Environmental sensor station with display."""
 
-    # Display colors (RGB565 via PIL)
+    # Display colors (RGB)
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     GREEN = (0, 255, 0)
@@ -83,36 +85,48 @@ class SensorStation:
         }
 
     def _init_display(self):
-        """Initialize the Mini PiTFT display."""
-        # SPI configuration for Mini PiTFT
-        spi = board.SPI()
-
-        # Display pins for Mini PiTFT
+        """Initialize the Mini PiTFT display using RGB Display library."""
+        # Configuration for CS and DC pins (PiTFT defaults)
         cs_pin = digitalio.DigitalInOut(board.CE0)
         dc_pin = digitalio.DigitalInOut(board.D25)
         reset_pin = digitalio.DigitalInOut(board.D27)
 
         # Backlight control
         self.backlight = digitalio.DigitalInOut(board.D22)
-        self.backlight.direction = digitalio.Direction.OUTPUT
+        self.backlight.switch_to_output()
         self.backlight.value = True
 
-        # Create display - 135x240 Mini PiTFT
-        self.display = adafruit_st7789.ST7789(
+        # Setup SPI bus
+        spi = board.SPI()
+
+        # Baudrate - can go up to 64MHz for faster updates
+        BAUDRATE = 64000000
+
+        # Create the ST7789 display using adafruit_rgb_display
+        # For 135x240 Mini PiTFT in landscape (rotation=270)
+        self.display = st7789.ST7789(
             spi,
-            rotation=270,  # Landscape orientation
-            width=240,
-            height=135,
-            x_offset=53,
-            y_offset=40,
             cs=cs_pin,
             dc=dc_pin,
             rst=reset_pin,
-            baudrate=64000000,
+            baudrate=BAUDRATE,
+            width=135,
+            height=240,
+            x_offset=53,
+            y_offset=40,
+            rotation=270,  # Landscape orientation
         )
 
-        # Create image buffer
-        self.image = Image.new("RGB", (self.display.width, self.display.height))
+        # Create image buffer - swap dimensions for rotation
+        # In rotation=270, width becomes height and vice versa
+        if self.display.rotation % 180 == 90:
+            self.width = self.display.height
+            self.height = self.display.width
+        else:
+            self.width = self.display.width
+            self.height = self.display.height
+
+        self.image = Image.new("RGB", (self.width, self.height))
         self.draw = ImageDraw.Draw(self.image)
 
         # Load fonts
@@ -159,8 +173,9 @@ class SensorStation:
         # BMP280 Pressure & Altitude
         try:
             self.bmp = adafruit_bmp280.Adafruit_BMP280_I2C(self.i2c)
-            # Set sea level pressure for altitude calculation (adjust for your location)
-            self.bmp.sea_level_pressure = 1013.25  # hPa - adjust as needed
+            # Set sea level pressure for altitude calculation
+            # Fort Worth area is typically around 1015-1020 hPa
+            self.bmp.sea_level_pressure = 1013.25  # Adjust for your location
             print("✓ BMP280 initialized")
         except Exception as e:
             print(f"✗ BMP280 failed: {e}")
@@ -259,10 +274,10 @@ class SensorStation:
 
     def draw_page_environmental(self):
         """Draw environmental data page (temp, humidity, pressure)."""
-        self.draw.rectangle((0, 0, self.display.width, self.display.height), fill=self.BLACK)
+        self.draw.rectangle((0, 0, self.width, self.height), fill=self.BLACK)
 
         # Title bar
-        self.draw.rectangle((0, 0, self.display.width, 20), fill=self.BLUE)
+        self.draw.rectangle((0, 0, self.width, 20), fill=self.BLUE)
         self.draw.text((5, 2), "ENVIRONMENTAL", font=self.font_small, fill=self.WHITE)
 
         y = 28
@@ -306,14 +321,14 @@ class SensorStation:
             self.draw.text((5, y), f"Alt: {alt_m:.0f}m / {alt_ft:.0f}ft", font=self.font_medium, fill=self.WHITE)
 
         # Page indicator
-        self.draw.text((220, 120), "1/4", font=self.font_small, fill=self.GRAY)
+        self.draw.text((self.width - 25, self.height - 15), "1/4", font=self.font_small, fill=self.GRAY)
 
     def draw_page_air_quality(self):
         """Draw air quality page (CO2)."""
-        self.draw.rectangle((0, 0, self.display.width, self.display.height), fill=self.BLACK)
+        self.draw.rectangle((0, 0, self.width, self.height), fill=self.BLACK)
 
         # Title bar
-        self.draw.rectangle((0, 0, self.display.width, 20), fill=self.GREEN)
+        self.draw.rectangle((0, 0, self.width, 20), fill=self.GREEN)
         self.draw.text((5, 2), "AIR QUALITY", font=self.font_small, fill=self.BLACK)
 
         if self.sensor_data['co2']:
@@ -338,7 +353,7 @@ class SensorStation:
             self.draw.text((140, 45), "ppm", font=self.font_medium, fill=self.WHITE)
 
             # Status
-            self.draw.rectangle((5, 75, 235, 95), outline=color, width=2)
+            self.draw.rectangle((5, 75, self.width - 5, 95), outline=color, width=2)
             self.draw.text((80, 77), status, font=self.font_medium, fill=color)
 
             # SCD temperature and humidity
@@ -354,14 +369,14 @@ class SensorStation:
             self.draw.text((50, 75), "CO2 data...", font=self.font_medium, fill=self.YELLOW)
 
         # Page indicator
-        self.draw.text((220, 120), "2/4", font=self.font_small, fill=self.GRAY)
+        self.draw.text((self.width - 25, self.height - 15), "2/4", font=self.font_small, fill=self.GRAY)
 
     def draw_page_gps(self):
         """Draw GPS page."""
-        self.draw.rectangle((0, 0, self.display.width, self.display.height), fill=self.BLACK)
+        self.draw.rectangle((0, 0, self.width, self.height), fill=self.BLACK)
 
         # Title bar
-        self.draw.rectangle((0, 0, self.display.width, 20), fill=self.ORANGE)
+        self.draw.rectangle((0, 0, self.width, 20), fill=self.ORANGE)
         self.draw.text((5, 2), "GPS LOCATION", font=self.font_small, fill=self.BLACK)
 
         y = 28
@@ -398,14 +413,14 @@ class SensorStation:
             self.draw.text((40, 75), "GPS signal...", font=self.font_medium, fill=self.YELLOW)
 
         # Page indicator
-        self.draw.text((220, 120), "3/4", font=self.font_small, fill=self.GRAY)
+        self.draw.text((self.width - 25, self.height - 15), "3/4", font=self.font_small, fill=self.GRAY)
 
     def draw_page_system(self):
         """Draw system info page."""
-        self.draw.rectangle((0, 0, self.display.width, self.display.height), fill=self.BLACK)
+        self.draw.rectangle((0, 0, self.width, self.height), fill=self.BLACK)
 
         # Title bar
-        self.draw.rectangle((0, 0, self.display.width, 20), fill=self.CYAN)
+        self.draw.rectangle((0, 0, self.width, 20), fill=self.CYAN)
         self.draw.text((5, 2), "SYSTEM INFO", font=self.font_small, fill=self.BLACK)
 
         y = 28
@@ -439,7 +454,7 @@ class SensorStation:
             x += 35
 
         # Page indicator
-        self.draw.text((220, 120), "4/4", font=self.font_small, fill=self.GRAY)
+        self.draw.text((self.width - 25, self.height - 15), "4/4", font=self.font_small, fill=self.GRAY)
 
     def update_display(self):
         """Update the display with current page."""

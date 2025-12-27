@@ -4,9 +4,9 @@
 # Core Blinka library for CircuitPython on Linux
 adafruit-blinka
 
-# Display libraries
+# Display library - use RGB Display (PIL-based), NOT adafruit-circuitpython-st7789
+# The standalone st7789 library is displayio-based and conflicts with PIL usage
 adafruit-circuitpython-rgb-display
-adafruit-circuitpython-st7789
 
 # Sensor libraries
 adafruit-circuitpython-ds3231      # DS3231 RTC

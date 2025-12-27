@@ -61,9 +61,9 @@ pip install --upgrade pip
 # Core
 pip install --upgrade adafruit-blinka
 
-# Display
+# Display - use RGB Display (PIL-based), NOT the standalone st7789 (displayio-based)
 pip install adafruit-circuitpython-rgb-display
-pip install adafruit-circuitpython-st7789
+# NOTE: Do NOT install adafruit-circuitpython-st7789 - it conflicts with RGB Display
 
 # Sensors
 pip install adafruit-circuitpython-ds3231      # RTC

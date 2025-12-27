@@ -77,9 +77,12 @@ source ~/sensor_station/.venv/bin/activate
 # Core Blinka library
 pip install --upgrade adafruit-blinka
 
-# Display libraries
+# Display library - IMPORTANT: Use RGB Display, NOT standalone st7789
+# The adafruit-circuitpython-st7789 library is displayio-based and conflicts with PIL
 pip install adafruit-circuitpython-rgb-display
-pip install adafruit-circuitpython-st7789
+
+# If you previously installed the wrong library, remove it:
+pip uninstall adafruit-circuitpython-st7789
 
 # Sensor libraries
 pip install adafruit-circuitpython-ds3231      # RTC
@@ -88,6 +91,19 @@ pip install adafruit-circuitpython-bmp280      # BMP280
 pip install adafruit-circuitpython-scd4x       # SCD-41
 pip install adafruit-circuitpython-gps         # PA1010D GPS
 ```
+
+### Fix for Display "x_offset" Error
+
+If you see an error about `x_offset` or `BusDisplay`, you have a library conflict:
+
+```bash
+source ~/sensor_station/.venv/bin/activate
+pip uninstall adafruit-circuitpython-st7789
+pip install --upgrade adafruit-circuitpython-rgb-display
+```
+
+The `adafruit-circuitpython-rgb-display` library is PIL-compatible and works on Linux.
+The standalone `adafruit-circuitpython-st7789` is displayio-based and doesn't work with PIL.
 
 ### 5. Verify I2C Devices
 
